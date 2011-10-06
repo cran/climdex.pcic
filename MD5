@@ -1,6 +1,7 @@
-0c7946f40f8ac76537478dcb3a3f28c0 *DESCRIPTION
+05d8af17fc25b045ccb6eeed1717a0ad *CHANGELOG
+303cad2de2f26911dc86b672f4a34403 *DESCRIPTION
 e17f201644c5b6d8fa1f7dd71165d2ab *NAMESPACE
-feaf04645f3403916a95585b6762de51 *R/climdex.r
+3f75ef8582b03779585649d810ab913c *R/climdex.r
 2d2cf4b5c06867d9c83eccd52f022f7f *man/climdex.cdd.Rd
 ca37e7a9d3058ff8fc85664ae07e59ec *man/climdex.dtr.Rd
 8b4176fd578fd3253bde5f8e8f893b67 *man/climdex.gsl.Rd
@@ -15,4 +16,4 @@ b77b519330ad8ba405c3cd168de0fd10 *man/climdex.tn10p.Rd
 20876b11d479f322146756d6c7a3f06c *man/climdex.wsdi.Rd
 f5cd28c75f5a00badb021768cf865f58 *man/climdexInput-class.Rd
 07d7a1d191bd0c94b7bfa1e63b8315cb *man/climdexInput.raw.Rd
-80c48fd557680205577dffb7c3f1c621 *src/zhang_running_quantile.cc
+b396209c686962f95f880b4880f623be *src/zhang_running_quantile.cc
