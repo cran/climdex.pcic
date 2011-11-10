@@ -47,6 +47,9 @@ valid.climdexInput <- function(x) {
 
   if(sum(pctile.names %in% names(x@pctile)) != length(pctile.names))
     errors <- c(errors, "pctile does not contain at least one of precwet95 and precwet99.")
+
+  if(length(x@northern.hemisphere) != 1)
+    errors <- c(errors, "northern.hemisphere must be of length 1.")
   
   if(length(errors) == 0)
     return(TRUE)
@@ -67,7 +70,8 @@ setClass("climdexInput",
                         dates = "PCICt",
                         base.range = "PCICt",
                         annual.factor = "factor",
-                        monthly.factor = "factor"),
+                        monthly.factor = "factor",
+                        northern.hemisphere = "logical"),
          validity=valid.climdexInput
          )
 
@@ -87,7 +91,7 @@ get.date.field <- function(input.data, cal, date.types) {
 create.filled.series <- function(data, data.dates, new.date.sequence) {
   new.data <- rep(NA, length(new.date.sequence))
   data.in.new.data <- (data.dates >= new.date.sequence[1]) & (data.dates <= new.date.sequence[length(new.date.sequence)])
-  indices <- round(as.numeric(data.dates[data.in.new.data] - new.date.sequence[1], units="days")) + 1
+  indices <- floor(as.numeric(data.dates[data.in.new.data] - new.date.sequence[1], units="days")) + 1
   new.data[indices] <- data[data.in.new.data]
   return(new.data)
 }
@@ -140,13 +144,12 @@ zhang.bootstrap.qtile <- function(x, dates, qtiles, bootstrap.range, include.mas
       replace.index <- window + (1:dpy) + ((idx.to.replace.with - 1) * dpy)
       bs.data[omit.index] <- bs.data[replace.index]
       return(running.quantile(bs.data, n, qtiles, dpy))
-    }))
-  } )
-  
-  dim(d) <- c(dpy, length(qtiles), nyears - 1, nyears)
+    }, simplify="array"))
+  }, simplify="array" )
+
   d <- aperm(d, perm=c(1, 4, 3, 2))
   ## new dims: dpy, nyears, nyears-1, length(quantiles)
-
+  
   return(lapply(1:length(qtiles), function(x) { d[,,,x] }))
 }
 
@@ -175,7 +178,7 @@ get.num.days.in.range <- function(x, date.range) {
   
 }
 
-climdexInput.raw <- function(tmax, tmin, prec, tmax.dates, tmin.dates, prec.dates, base.range=c(1961, 1990), n=5) {
+climdexInput.raw <- function(tmax, tmin, prec, tmax.dates, tmin.dates, prec.dates, base.range=c(1961, 1990), n=5, northern.hemisphere=TRUE) {
   if(length(tmin) != length(tmin.dates))
     stop("Length of tmin data and tmin dates do not match.")
   
@@ -198,53 +201,58 @@ climdexInput.raw <- function(tmax, tmin, prec, tmax.dates, tmin.dates, prec.date
   last.day.of.year <- "12-31"
   if(!is.null(attr(tmax.dates, "months")))
     last.day.of.year <- paste("12", attr(tmax.dates, "months")[12], sep="-")
-  bs.date.range <- as.PCICt(paste(base.range, c("01-01", last.day.of.year), sep="-"), cal=cal)
 
+  ## Get all dates for baseline work
+  bs.date.range <- as.PCICt(paste(base.range, c("01-01", last.day.of.year), sep="-"), cal=cal)
+  bs.win.date.range <- get.bootstrap.windowed.range(bs.date.range, n)
+  bs.date.series <- seq(bs.win.date.range[1], bs.win.date.range[2], by="day")
+  
   ## Check that the base range includes at least a month's worth of data for each variable.
   if(!all(sapply(list(tmax.dates, tmin.dates, prec.dates), get.num.days.in.range, bs.date.range) > 30))
     warning("There is less than a month of data for at least one of tmin, tmax, and prec. Consider revising your base range and/or check your input data.")
 
-  bs.win.date.range <- get.bootstrap.windowed.range(bs.date.range, n)
-  all.dates <- c(tmin.dates, tmax.dates, prec.dates, bs.win.date.range)
-  date.range <- range(all.dates)
-  year.range <- as.numeric(strftime(date.range, "%Y", tz="GMT"))
-  new.date.range <- as.PCICt(paste(year.range, c("01-01", last.day.of.year), sep="-"), cal=cal)
+  ## Get dates for normal data
+  all.dates <- c(tmin.dates, tmax.dates, prec.dates)
+  new.date.range <- as.PCICt(paste(as.numeric(strftime(range(all.dates), "%Y", tz="GMT")), c("01-01", last.day.of.year), sep="-"), cal=cal)
   date.series <- seq(new.date.range[1], new.date.range[2], by="day")
-  
+
+  ## Factors for dividing data up
   annual.factor <- as.factor(strftime(date.series, "%Y", tz="GMT"))
   monthly.factor <- as.factor(strftime(date.series, "%Y-%m", tz="GMT"))
-  
+
+  ## Filled data...
   filled.tmax <- create.filled.series(tmax, tmax.dates, date.series)
   filled.tmin <- create.filled.series(tmin, tmin.dates, date.series)
   filled.prec <- create.filled.series(prec, prec.dates, date.series)
   filled.tavg <- (filled.tmax + filled.tmin) / 2
+  filled.list <- list(tmax=filled.tmax, tmin=filled.tmin, tavg=filled.tavg, prec=filled.prec)
+  filled.list.names <- names(filled.list)
 
-  filled.list <- list(filled.tmax, filled.tmin, filled.tavg, filled.prec)
-  filled.list.names <- c("tmax", "tmin", "tavg", "prec")
-
+  ## NA masks
   namask.ann <- do.call(data.frame, lapply(filled.list, get.na.mask, annual.factor, 15))
-  colnames(namask.ann) <- filled.list.names
-  
   namask.mon <- do.call(data.frame, lapply(filled.list, get.na.mask, monthly.factor, 3))
-  colnames(namask.mon) <- filled.list.names
+  colnames(namask.ann) <- colnames(namask.mon) <- filled.list.names
 
   ## DeMorgan's laws FTW
   wet.days <- !(is.na(filled.prec) | filled.prec < 1)
 
-  bs.pctile.base <- do.call(c, lapply(filled.list[1:2], zhang.bootstrap.qtile, date.series, c(0.1, 0.9), bs.date.range, n=n))
-  bs.pctile <- do.call(data.frame, lapply(filled.list[1:2], zhang.running.qtile, date.series, date.series, c(0.1, 0.9), bs.date.range, n=n))
+  ## Pad data passed as base if we're missing endpoints...
+  filled.list.base <- list(tmax=create.filled.series(filled.tmax, date.series, bs.date.series), tmin=create.filled.series(filled.tmin, date.series, bs.date.series))
 
-  inset <- date.series >= new.date.range[1] & date.series <= new.date.range[2] & !is.na(filled.prec) & wet.days
+  bs.pctile.base <- do.call(c, lapply(filled.list.base[1:2], zhang.bootstrap.qtile, bs.date.series, c(0.1, 0.9), bs.date.range, n=n))
+  bs.pctile <- do.call(data.frame, lapply(filled.list.base[1:2], zhang.running.qtile, date.series, bs.date.series, c(0.1, 0.9), bs.date.range, n=n))
+
+  inset <- date.series >= bs.date.range[1] & date.series <= bs.date.range[2] & !is.na(filled.prec) & wet.days
   pctile <- quantile(filled.prec[inset], c(0.95, 0.99))
   
   names(bs.pctile.base) <- c("tmax10", "tmax90", "tmin10", "tmin90")
   names(bs.pctile) <- c("tmax10", "tmax90", "tmin10", "tmin90")
   names(pctile) <- c("precwet95", "precwet99")
   
-  return(new("climdexInput", tmax=filled.tmax, tmin=filled.tmin, tavg=filled.tavg, prec=filled.prec, namask.ann=namask.ann, namask.mon=namask.mon, running.pctile.base=bs.pctile.base, running.pctile.notbase=bs.pctile, pctile=pctile, dates=date.series, base.range=bs.date.range, annual.factor=annual.factor, monthly.factor=monthly.factor))
+  return(new("climdexInput", tmax=filled.tmax, tmin=filled.tmin, tavg=filled.tavg, prec=filled.prec, namask.ann=namask.ann, namask.mon=namask.mon, running.pctile.base=bs.pctile.base, running.pctile.notbase=bs.pctile, pctile=pctile, dates=date.series, base.range=bs.date.range, annual.factor=annual.factor, monthly.factor=monthly.factor, northern.hemisphere=northern.hemisphere))
 }
 
-climdexInput.csv <- function(tmax.file, tmin.file, prec.file, data.columns=list(tmin="tmin", tmax="tmax", prec="prec"), base.range=c(1961, 1990), na.strings=NULL, cal="gregorian", date.types=NULL, n=5) {
+climdexInput.csv <- function(tmax.file, tmin.file, prec.file, data.columns=list(tmin="tmin", tmax="tmax", prec="prec"), base.range=c(1961, 1990), na.strings=NULL, cal="gregorian", date.types=NULL, n=5, northern.hemisphere=TRUE) {
   if(sum(c("tmax", "tmin", "prec") %in% names(data.columns)) != 3)
     stop("Must specify names of all data columns (tmin, tmax, prec).")
 
@@ -271,7 +279,7 @@ climdexInput.csv <- function(tmax.file, tmin.file, prec.file, data.columns=list(
   tmax.dates <- get.date.field(tmax.dat, cal, date.types)
   prec.dates <- get.date.field(prec.dat, cal, date.types)
 
-  return(climdexInput.raw(tmax.dat[,data.columns$tmax], tmin.dat[,data.columns$tmin], prec.dat[,data.columns$prec], tmax.dates, tmin.dates, prec.dates, base.range))
+  return(climdexInput.raw(tmax.dat[,data.columns$tmax], tmin.dat[,data.columns$tmin], prec.dat[,data.columns$prec], tmax.dates, tmin.dates, prec.dates, base.range, n, northern.hemisphere))
 }
 
 ## Temperature units: degrees C
@@ -291,7 +299,22 @@ climdex.id <- function(ci) { return(number.days.op.threshold(ci@tmax, ci@annual.
 climdex.tr <- function(ci) { return(number.days.op.threshold(ci@tmin, ci@annual.factor, 20, ">") * ci@namask.ann$tmin) }
 
 ## GSL: Annual. Should work, needs more testing; is imprecise around date of Jul 1. Creates GSL 1 day longer than fclimdex due to off-by-one in fclimdex.
-climdex.gsl <- function(ci) { return(growing.season.length(ci@tavg, ci@annual.factor) * ci@namask.ann$tavg) }
+climdex.gsl <- function(ci) {
+  ## Gotta shift dates so that July 1 is considered Jan 1 of same year in southern hemisphere
+  ts.mid <- as.numeric(strftime(as.PCICt("1961-07-01", attr(ci@dates, "cal")), "%j"))
+  if(ci@northern.hemisphere) {
+    return(growing.season.length(ci@tavg, ci@annual.factor, ts.mid) * ci@namask.ann$tavg)
+  } else {    
+    gsl.dates <- ci@dates - 86400 * ts.mid
+    valid.date.range <- range(ci@dates)
+    inset <- gsl.dates >= valid.date.range[1] & gsl.dates <= valid.date.range[2]
+    gsl.factor <- factor(strftime(gsl.dates[inset], "%Y", tz="GMT"))
+    gsl.temp.data <- ci@tavg[inset]
+    namask.gsl <- get.na.mask(gsl.temp.data, gsl.factor, 15)
+    namask.gsl[length(namask.gsl)] <- NA
+    return((growing.season.length(gsl.temp.data, gsl.factor, ts.mid) * namask.gsl))
+  }
+}
 
 ## TXx: Monthly. Exact match.
 climdex.txx <- function(ci) { return(tapply.fast(ci@tmax, ci@monthly.factor, max) * ci@namask.mon$tmax) }
@@ -402,7 +425,7 @@ number.days.op.threshold <- function(temp, date.factor, threshold, op="<") {
 ## Meaningless if not annual
 ## Time series must be contiguous
 ## NOTE: There is a difference of 1 between our output and fclimdex. See line 637; consider case where start and end day are same. Correct answer is 1 day GSL; their answer is 0 day.
-growing.season.length <- function(daily.mean.temp, date.factor,
+growing.season.length <- function(daily.mean.temp, date.factor, ts.mid,
                                   min.length=6, t.thresh=5) {
   return(tapply.fast(daily.mean.temp, date.factor, function(ts) {
     ts.len<- length(ts)
@@ -438,7 +461,7 @@ percent.days.op.threshold <- function(temp, dates, date.factor, threshold.outsid
     years.base.range <- range(years.base)
     byrs <- (years.base.range[2] - years.base.range[1] + 1)
     year.base.list <- years.base.range[1]:years.base.range[2]
-
+    
     d <- lapply(1:byrs, function(x) { yset <-  which(years.base == year.base.list[x]); sapply(1:(byrs - 1), function(y) { f(temp.base[yset], base.thresholds[jdays.base[yset],x,y]) } ) })
     ## This repeats a bug (or at least, debatable decision) in fclimdex where they always divide by byrs - 1 even when there are NAs (missing values) in the thresholds
     dat[inset] <- unlist(lapply(d, apply, 1, function(x) { sum(as.numeric(x), na.rm=TRUE) } ) ) / (byrs - 1)
@@ -502,7 +525,6 @@ total.precip.op.threshold <- function(daily.prec, date.factor, threshold, op) {
 running.quantile <- function(data, n, q, dpy) {
   ret <- .Call("running_quantile_windowed", data, n, q, dpy, DUP=FALSE)
   dim(ret) <- c(length(q), dpy)
-  ##browser()
   return(t(ret))
 }
 
