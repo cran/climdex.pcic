@@ -6,19 +6,22 @@
   These functions compute the climdex indices Rx5day and Rx1day.
 }
 \usage{
-climdex.rx5day(ci)
-climdex.rx1day(ci)
+climdex.rx5day(ci, freq=c("monthly", "annual"), center.mean.on.last.day=FALSE)
+climdex.rx1day(ci, freq=c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+  \item{freq}{Time frequency to aggregate to.}
+  \item{center.mean.on.last.day}{Whether to center the 5-day running
+    mean on the last day of the window, instead of the center day.}
 }
 
 \details{
   These functions take a climdexInput object as input and compute the
   climdex indices Rx5day and Rx1day. These are:
   \itemize{
-    \item{Rx5day: }{Monthly maximum 5-day consecutive precipitation.}
-    \item{Rx1day: }{Monthly maximum 1-day precipitation.}
+    \item{Rx5day: }{Monthly or annual maximum 5-day consecutive precipitation.}
+    \item{Rx1day: }{Monthly or annual maximum 1-day precipitation.}
   }  
 }
 
@@ -27,11 +30,12 @@ climdex.rx1day(ci)
 }
 
 \note{
-  Behaviour of climdex.rx5day differs somewhat from fclimdex, as
-  fclimdex contains a bug. The running sum series computed by fclimdex
-  is off by 2 days, and the first day a running sum can be computed for
-  is left out entirely. This can result in wet periods near a month
-  boundary going into a different month.
+  The default behaviour of climdex.rx5day differs somewhat from
+  fclimdex, as fclimdex and climdex.pcic differ on the definition of
+  Rx5day. The running sum series computed by fclimdex is off by 2 days,
+  and the first day a running sum can be computed for is left out
+  entirely. The behaviour of fclimdex can be replicated by setting
+  center.mean.on.last.day to TRUE.
 }
 
 \examples{
