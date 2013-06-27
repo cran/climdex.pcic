@@ -1,3 +1,9 @@
+0.7-2:
+ - Clean up line length problems with documentation.
+
+0.7-1:
+ - Implement much faster bootstrapping algorithm.
+
 0.6-2:
  - Update documentation to reflect all changes.
  - Update and clean up comments.
