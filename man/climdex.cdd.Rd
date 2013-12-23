@@ -1,43 +1,28 @@
-\name{climdex.cdd, climdex.cwd}
+\name{climdex.cdd}
 \alias{climdex.cdd}
-\alias{climdex.cwd}
-\title{Maximum Consecutive Wet and Dry Days}
-\description{
-  These functions compute the climdex indices CDD and CWD.
-}
+\title{Maximum Consecutive Dry Days}
 \usage{
-climdex.cdd(ci, spells.can.span.years=TRUE)
-climdex.cwd(ci, spells.can.span.years=TRUE)
+  climdex.cdd(ci, spells.can.span.years = TRUE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
-  \item{spells.can.span.years}{Whether to allow spells of dry/wet days
-    to span years}
+
+  \item{spells.can.span.years}{Whether to allow spells to
+  span years}
 }
-
-\details{
-  These functions take a climdexInput object as input and compute the
-  climdex indices CDD and CWD. These are:
-  \itemize{
-    \item{CDD: }{Annual maximum length of dry spell, in days.}
-    \item{CWD: }{Annual maximum length of wet spell, in days.}
-  }  
-
-  Wet spells are considered to be sequences of days where daily
-  precipitation is at least 1mm per day.
-
-  Dry spells are considered to be sequences of days where daily
-  preciptation is less than 1mm per day.
-
-  The \code{spells.can.span.years} option specifies whether spells can
-  cross year boundaries -- i.e., span years. The default for this is the
-  same as for fclimdex.
-}
-
 \value{
-  A vector containing the length of the dry or wet spell for each year.
+  A vector containing the length of the spell for each
+  year.
 }
-
+\description{
+  This function computes the climdex index CDD.
+}
+\details{
+  This function computes the climdex index CDD: the annual
+  maximum length of dry spells, in days. Dry spells are
+  considered to be sequences of days where daily
+  preciptation is less than 1mm per day.
+}
 \examples{
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
@@ -55,26 +40,17 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the number of consecutive days where
-## precipitation was less than 1mm/day.
+## Create an annual timeseries of the CDD index.
 cdd <- climdex.cdd(ci)
-
-## Create an annual timeseries of the number of consecutive days where
-## precipitation was at least 1mm/day.
-cwd <- climdex.cwd(ci)
-
-## Print these out for testing purposes.
-cdd
-cwd
 }
-
-\seealso{
-  \code{\link{climdexInput.raw}}, \code{\link{climdexInput.csv}}, \code{\link{spell.length.max}}.
-}
-
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
-}  
-
-\keyword{ts}
+}
+\seealso{
+  \code{\link{climdexInput.raw}},
+  \code{\link{climdexInput.csv}},
+  \code{\link{spell.length.max}}.
+}
 \keyword{climate}
+\keyword{ts}
+

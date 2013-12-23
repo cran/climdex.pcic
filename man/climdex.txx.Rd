@@ -1,38 +1,26 @@
-\name{climdex.txx, climdex.tnx, climdex.txn, climdex.tnn}
+\name{climdex.txx}
 \alias{climdex.txx}
-\alias{climdex.tnx}
-\alias{climdex.txn}
-\alias{climdex.tnn}
-\title{Monthly Maximum/Minimum of Daily Maximum/Minimum Temperature}
-\description{
-  These functions compute the climdex indices TXx, TNx, TXn, and TNn.
-}
+\title{Monthly Maximum of Daily Maximum Temperature}
 \usage{
-climdex.txx(ci, freq=c("monthly", "annual"))
-climdex.tnx(ci, freq=c("monthly", "annual"))
-climdex.txn(ci, freq=c("monthly", "annual"))
-climdex.tnn(ci, freq=c("monthly", "annual"))
+  climdex.txx(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+
   \item{freq}{Time frequency to aggregate to.}
 }
-
-\details{
-  These functions take a climdexInput object as input and compute the
-  climdex indices TXx, TNx, TXn, and TNn. These are:
-  \itemize{
-    \item{TXx: }{Monthly or annual maximum of daily maximum temperature.}
-    \item{TNx: }{Monthly or annual maximum of daily minimum temperature.}
-    \item{TXn: }{Monthly or annual minimum of daily maximum temperature.}
-    \item{TNn: }{Monthly or annual minimum of daily minimum temperature.}
-  }  
-}
-
 \value{
-  A vector containing the value of the index for each month.
+  A vector containing the value of the index for each
+  month.
 }
-
+\description{
+  This function computes the climdex index TXx.
+}
+\details{
+  This function takes a climdexInput object as input and
+  computes the monthly or annual maximum of daily maximum
+  temperature.
+}
 \examples{
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
@@ -52,30 +40,14 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
 ## Create a monthly timeseries of maximum daily maximum temperature.
 txx <- climdex.txx(ci)
-
-## Create a monthly timeseries of maximum daily minimum temperature.
-tnx <- climdex.tnx(ci)
-
-## Create a monthly timeseries of minimum daily maximum temperature.
-txn <- climdex.txn(ci)
-
-## Create a monthly timeseries of minimum daily minimum temperature.
-tnn <- climdex.tnn(ci)
-
-## Print these out for testing purposes.
-txx
-tnx
-txn
-tnn
 }
-
-\seealso{
-  \code{\link{climdexInput.raw}}, \code{\link{climdexInput.csv}}.
-}
-
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
-}  
-
-\keyword{ts}
+}
+\seealso{
+  \code{\link{climdexInput.raw}},
+  \code{\link{climdexInput.csv}}.
+}
 \keyword{climate}
+\keyword{ts}
+

@@ -1,41 +1,26 @@
-\name{climdex.r95ptot, climdex.r99ptot}
+\name{climdex.r95ptot}
 \alias{climdex.r95ptot}
-\alias{climdex.r99ptot}
-\alias{climdex.prcptot}
-\title{Total Daily Precipitation Exceeding 95\%ile, 99\%ile Threshold}
-\description{
-  These functions compute the climdex indices R95pTOT, R99pTOT, and
-  PRCPTOT.
-}
+\title{Total Daily Precipitation Exceeding 95\%ile Threshold}
 \usage{
-climdex.r95ptot(ci)
-climdex.r99ptot(ci)
-climdex.prcptot(ci)
+  climdex.r95ptot(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
-
-\details{
-  These functions take a climdexInput object as input and compute the
-  climdex indices R95pTOT, R99pTOT, and PRCPTOT. These are:
-  \itemize{
-    \item{R95pTOT: }{Annual sum of precipitation in days where daily
-  precipitation exceeds the 95th percentile of daily precipitation in
-  the base period.}
-    \item{R99pTOT: }{Annual sum of precipitation in days where daily
-  precipitation exceeds the 99th percentile of daily precipitation in
-  the base period.}
-    \item{PRCPTOT: }{Annual sum of precipitation in days where daily
-  precipitation is at least 1mm/day.}
-  }  
-}
-
 \value{
-  A vector containing an annual timeseries of precipitation exceeding
-  the appropriate threshold.
+  A vector containing an annual timeseries of precipitation
+  exceeding the threshold.
 }
-
+\description{
+  This function computes the climdex index R95pTOT.
+}
+\details{
+  This function takes a climdexInput object as input and
+  computes the climdex index R95pTOT: the annual sum of
+  precipitation in days where daily precipitation exceeds
+  the 95th percentile of daily precipitation in the base
+  period.
+}
 \examples{
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
@@ -53,33 +38,16 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the sum of precipitation where
-## precipitation exceeds the 95th percentile of precipitation in the
-## base period.
+## Create an annual timeseries of the R95pTOT index.
 r95ptot <- climdex.r95ptot(ci)
-
-## Create an annual timeseries of the sum of precipitation where
-## precipitation exceeds the 99th percentile of precipitation in the
-## base period.
-r99ptot <- climdex.r99ptot(ci)
-
-## Create an annual timeseries of the sum of precipitation where
-## precipitation is at least 1mm/day.
-prcptot <- climdex.prcptot(ci)
-
-## Print these out for testing purposes.
-r95ptot
-r99ptot
-prcptot
 }
-
-\seealso{
-  \code{\link{climdexInput.raw}}, \code{\link{climdexInput.csv}}.
-}
-
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
-}  
-
-\keyword{ts}
+}
+\seealso{
+  \code{\link{climdexInput.raw}},
+  \code{\link{climdexInput.csv}}.
+}
 \keyword{climate}
+\keyword{ts}
+

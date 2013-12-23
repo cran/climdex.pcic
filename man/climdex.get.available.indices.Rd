@@ -1,22 +1,28 @@
-\name{climdex.r10mm}
-\alias{climdex.r10mm}
-\title{Precipitation Exceeding 10mm Per Day}
+\name{climdex.get.available.indices}
+\alias{climdex.get.available.indices}
+\title{Get available indices by name}
 \usage{
-  climdex.r10mm(ci)
+  climdex.get.available.indices(ci, function.names = TRUE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+
+  \item{function.names}{Whether to return function names.}
 }
 \value{
-  A vector containing the value of the index for each year.
+  A vector containing an annual timeseries of precipitation
+  in wet days.
 }
 \description{
-  This function computes the climdex index R10mm.
+  This function returns a vector of (function) names of
+  available indices.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the climdex index R10mm: the annual count of
-  days where daily precipitation is more than 10mm per day.
+  returns the names of all the indices which may be
+  computed or, if \code{get.function.names} is TRUE (the
+  default), the names of the functions corresponding to the
+  indices.
 }
 \examples{
 ## Create a climdexInput object from some data already loaded in and
@@ -35,16 +41,7 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the R10mm index.
-r10mm <- climdex.r10mm(ci)
+## Get list of functions which might be run.
+func.names <- climdex.get.available.indices(ci)
 }
-\references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
-}
-\seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
-}
-\keyword{climate}
-\keyword{ts}
 

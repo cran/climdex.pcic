@@ -1,8 +1,8 @@
-\name{climdex.tn10p}
-\alias{climdex.tn10p}
-\title{Percent of Values Below 10th Percentile Daily Minimum Temperature}
+\name{climdex.tn90p}
+\alias{climdex.tn90p}
+\title{Percent of Values Above 90th Percentile Daily Minimum Temperature}
 \usage{
-  climdex.tn10p(ci, freq = c("monthly", "annual"))
+  climdex.tn90p(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -14,12 +14,12 @@
   index on a monthly or annual timescale.
 }
 \description{
-  This function computes the climdex index TN10p.
+  This function computes the climdex index TN90p.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the monthly or annual percent of values below
-  the 10th percentile of baseline daily minimum
+  computes the monthly or annual percent of values above
+  the 90th percentile of baseline daily minimum
   temperature.
 }
 \note{
@@ -55,8 +55,8 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create a monthly timeseries of the TN10p index.
-tn10p <- climdex.tn10p(ci)
+## Create a monthly timeseries of the TN90p index.
+tn90p <- climdex.tn90p(ci)
 }
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}

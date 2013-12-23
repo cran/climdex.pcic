@@ -1,22 +1,25 @@
-\name{climdex.r10mm}
-\alias{climdex.r10mm}
-\title{Precipitation Exceeding 10mm Per Day}
+\name{climdex.rnnmm}
+\alias{climdex.rnnmm}
+\title{Precipitation Exceeding A Specified Amount Per Day}
 \usage{
-  climdex.r10mm(ci)
+  climdex.rnnmm(ci, threshold = 1)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+
+  \item{threshold}{The threshold to be used for Rnnmm.}
 }
 \value{
   A vector containing the value of the index for each year.
 }
 \description{
-  This function computes the climdex index R10mm.
+  This function computes the climdex index Rnnmm.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the climdex index R10mm: the annual count of
-  days where daily precipitation is more than 10mm per day.
+  computes the climdex index Rnnmm: the annual count of
+  days where daily precipitation is more than \code{nn} mm
+  per day.
 }
 \examples{
 ## Create a climdexInput object from some data already loaded in and
@@ -35,8 +38,8 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the R10mm index.
-r10mm <- climdex.r10mm(ci)
+## Create an annual timeseries of the R1mm index.
+rnnmm <- climdex.rnnmm(ci)
 }
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}

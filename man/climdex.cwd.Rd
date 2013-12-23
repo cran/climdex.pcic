@@ -1,22 +1,28 @@
-\name{climdex.r10mm}
-\alias{climdex.r10mm}
-\title{Precipitation Exceeding 10mm Per Day}
+\name{climdex.cwd}
+\alias{climdex.cwd}
+\title{Maximum Consecutive Wet Days}
 \usage{
-  climdex.r10mm(ci)
+  climdex.cwd(ci, spells.can.span.years = TRUE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+
+  \item{spells.can.span.years}{Whether to allow spells to
+  span years}
 }
 \value{
-  A vector containing the value of the index for each year.
+  A vector containing the length of the spell for each
+  year.
 }
 \description{
-  This function computes the climdex index R10mm.
+  This function computes the climdex index CWD.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the climdex index R10mm: the annual count of
-  days where daily precipitation is more than 10mm per day.
+  computes the climdex index CWD: the annual maximum length
+  of wet spells, in days. Wet spells are considered to be
+  sequences of days where daily precipitation is at least
+  1mm per day.
 }
 \examples{
 ## Create a climdexInput object from some data already loaded in and
@@ -35,15 +41,16 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the R10mm index.
-r10mm <- climdex.r10mm(ci)
+## Create an annual timeseries of the CWD index.
+cdd <- climdex.cdd(ci)
 }
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
 }
 \seealso{
   \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+  \code{\link{climdexInput.csv}},
+  \code{\link{spell.length.max}}.
 }
 \keyword{climate}
 \keyword{ts}

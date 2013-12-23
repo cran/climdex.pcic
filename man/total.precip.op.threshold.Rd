@@ -1,25 +1,31 @@
 \name{total.precip.op.threshold}
 \alias{total.precip.op.threshold}
 \title{Sum of precipitation above a threshold}
-\description{
-  This function returns the sum of values above a threshold for each
-  period (as defined by date.factor).
-}
 \usage{
-total.precip.op.threshold(daily.prec, date.factor, threshold, op)
+  total.precip.op.threshold(daily.prec, date.factor,
+    threshold, op)
 }
 \arguments{
   \item{daily.prec}{Data to compute index on.}
+
   \item{date.factor}{Date factor to split by.}
+
   \item{threshold}{The threshold to compare to.}
-  \item{op}{The operator to use to compare data to threshold.}
-}
-\details{
-  This routine sums up all values which exceed or are below (depending
-  on op) the given threshold.
+
+  \item{op}{The operator to use to compare data to
+  threshold.}
 }
 \value{
-  A timeseries of sums of numbers above the threshold for each period.
+  A timeseries of sums of numbers above the threshold for
+  each period.
+}
+\description{
+  This function returns the sum of values above a threshold
+  for each period (as defined by date.factor).
+}
+\details{
+  This routine sums up all values which exceed or are below
+  (depending on op) the given threshold.
 }
 \examples{
 prec.dat <- c(0.1, 3.0, 4.3, 1.9, 1.3, 6.0, 0, 0, 4.0, 1)
@@ -31,5 +37,6 @@ prec.sum <- total.precip.op.threshold(prec.dat, phony.date.factor, 1, ">=")
 \seealso{
   \code{\link{climdex.r99ptot}}.
 }
-\keyword{ts}
 \keyword{climate}
+\keyword{ts}
+

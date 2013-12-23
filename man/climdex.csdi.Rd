@@ -1,8 +1,8 @@
-\name{climdex.wsdi}
-\alias{climdex.wsdi}
-\title{Warm Spell Duration Index}
+\name{climdex.csdi}
+\alias{climdex.csdi}
+\title{Cold Spell Duration Index}
 \usage{
-  climdex.wsdi(ci, spells.can.span.years = FALSE)
+  climdex.csdi(ci, spells.can.span.years = FALSE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -14,18 +14,18 @@
   A vector containing the value of the index for each year.
 }
 \description{
-  This function computes the climdex index WSDI.
+  This function computes the climdex index CSDI.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the climdex index WSDI (Warm Spell Duration
+  computes the climdex index CSDI (Cold Spell Duration
   Index).
 
-  The warm spell duration index is defined as the number of
-  days each year which are part of a "warm spell". A "warm
+  The cold spell duration index is defined as the number of
+  days each year which are part of a "cold spell". A "cold
   spell" is defined as a sequence of 6 or more days in
-  which the daily maximum temperature exceeds the 90th
-  percentile of daily maximum temperature for a 5-day
+  which the daily minimum temperature is below the 10th
+  percentile of daily minimum temperature for a 5-day
   running window surrounding this day during the baseline
   period.
 
@@ -61,8 +61,8 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the warm spell duration index.
-wsdi <- climdex.wsdi(ci)
+## Create an annual timeseries of the cold spell duration index.
+csdi <- climdex.csdi(ci)
 }
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}

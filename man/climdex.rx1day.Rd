@@ -1,22 +1,34 @@
-\name{climdex.r10mm}
-\alias{climdex.r10mm}
-\title{Precipitation Exceeding 10mm Per Day}
+\name{climdex.rx1day}
+\alias{climdex.rx1day}
+\title{Monthly Maximum 1-day Precipitation}
 \usage{
-  climdex.r10mm(ci)
+  climdex.rx1day(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
+
+  \item{freq}{Time frequency to aggregate to.}
 }
 \value{
-  A vector containing the value of the index for each year.
+  A vector containing the value of the index for each month
+  of each year.
 }
 \description{
-  This function computes the climdex index R10mm.
+  This function computes the climdex index Rx1day.
 }
 \details{
   This function takes a climdexInput object as input and
-  computes the climdex index R10mm: the annual count of
-  days where daily precipitation is more than 10mm per day.
+  computes the climdex index Rx1day: monthly or annual
+  maximum 1-day precipitation.
+}
+\note{
+  The default behaviour of climdex.rx5day differs somewhat
+  from fclimdex, as fclimdex and climdex.pcic differ on the
+  definition of Rx5day. The running sum series computed by
+  fclimdex is off by 2 days, and the first day a running
+  sum can be computed for is left out entirely. The
+  behaviour of fclimdex can be replicated by setting
+  center.mean.on.last.day to TRUE.
 }
 \examples{
 ## Create a climdexInput object from some data already loaded in and
@@ -35,8 +47,8 @@ ci <- climdexInput.raw(ec.1018935.tmax$MAX_TEMP,
 ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
-## Create an annual timeseries of the R10mm index.
-r10mm <- climdex.r10mm(ci)
+## Create a timeseries of monthly maximum 1-day precipitation.
+rx1day <- climdex.rx1day(ci)
 }
 \references{
   \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}

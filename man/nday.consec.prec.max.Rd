@@ -1,29 +1,36 @@
 \name{nday.consec.prec.max}
 \alias{nday.consec.prec.max}
 \title{Number of days (less than, greater than, etc) a threshold}
-\description{
-  Produces sums of values that exceed (or are below) the specified threshold.
-}
 \usage{
-nday.consec.prec.max(daily.prec, date.factor, ndays, center.mean.on.last.day=FALSE)
+  nday.consec.prec.max(daily.prec, date.factor, ndays,
+    center.mean.on.last.day = FALSE)
 }
 \arguments{
   \item{daily.prec}{Daily timeseries of precipitation.}
+
   \item{date.factor}{Factor to aggregate by.}
+
   \item{ndays}{Number of days in the running window.}
-  \item{center.mean.on.last.day}{Whether to center the n-day running
-    mean on the last day of the series, instead of the middle day.}
-}
-\details{
-  This function takes a data series, the number of days in the running
-  window, a date factor to aggregate by, and an optional modifier
-  parameter (center.mean.on.last.day). It computes the n-day running sum
-  of precipitation and returns the maximum n-day total precipitation per
-  unit time, as defined by \code{date.factor}.
+
+  \item{center.mean.on.last.day}{Whether to center the
+  n-day running mean on the last day of the series, instead
+  of the middle day.}
 }
 \value{
-  A vector consisting of the maximum n-day sum of precipitation per time
-  interval.
+  A vector consisting of the maximum n-day sum of
+  precipitation per time interval.
+}
+\description{
+  Produces sums of values that exceed (or are below) the
+  specified threshold.
+}
+\details{
+  This function takes a data series, the number of days in
+  the running window, a date factor to aggregate by, and an
+  optional modifier parameter (center.mean.on.last.day). It
+  computes the n-day running sum of precipitation and
+  returns the maximum n-day total precipitation per unit
+  time, as defined by \code{date.factor}.
 }
 \examples{
 ## Parse the dates into PCICt.
@@ -40,7 +47,8 @@ ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 
 ## Compute rx5day on a monthly basis.
-rx5day <- nday.consec.prec.max(ci@prec, ci@monthly.factor, 5)
+rx5day <- nday.consec.prec.max(ci@data$prec, ci@date.factors$monthly, 5)
 }
-\keyword{ts}
 \keyword{climate}
+\keyword{ts}
+
