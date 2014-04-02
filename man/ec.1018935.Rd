@@ -9,22 +9,21 @@
 maximum temperature or daily minimum temperature on that day, and
 observation flags.}
 \description{
-  This is the Environment Canada CDCD (Canadian Daily
-  Climate Data) precipitation, maximum temperature, and
-  minimum temperature data for station 1018935 - William
-  Head, BC, Canada.
+This is the Environment Canada CDCD (Canadian Daily Climate
+Data) precipitation, maximum temperature, and minimum
+temperature data for station 1018935 - William Head, BC,
+Canada.
 }
 \details{
-  This is the Environment Canada CDCD (Canadian Daily
-  Climate Data) precipitation, daily maximum temperature,
-  and daily minimum temperature data for station 1018935 -
-  William Head, BC, Canada. This is provided as example
-  data for running the Climdex package.
+This is the Environment Canada CDCD (Canadian Daily Climate
+Data) precipitation, daily maximum temperature, and daily
+minimum temperature data for station 1018935 - William
+Head, BC, Canada. This is provided as example data for
+running the Climdex package.
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  http://www.climate.weatheroffice.gc.ca/prods_servs/index_e.html#cdcd
-  .
+\code{\link{climdexInput.raw}},
+http://www.climate.weatheroffice.gc.ca/prods_servs/index_e.html#cdcd
+.
 }
-\keyword{datasets}
 

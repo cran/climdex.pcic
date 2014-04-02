@@ -1,16 +1,18 @@
 \name{climdexInput.raw}
 \alias{climdexInput.raw}
-\title{Method for creating climdexInput object from vectors of data}
+\title{Any of tmin (daily minimum temperature), tmax (daily maximum temperature),
+tavg (daily mean temperature), and prec (daily precipitation) can be passed
+in. tavg will be derived from the mean of tmax and tmin if it is not
+supplied. If any of tmin, tmax, and prec are not supplied, the set of
+indices which can be calculated will be limited to indices which do not
+involve the missing variables.}
 \usage{
-  climdexInput.raw(tmax = NULL, tmin = NULL, prec = NULL,
-    tmax.dates = NULL, tmin.dates = NULL,
-    prec.dates = NULL, base.range = c(1961, 1990), n = 5,
-    northern.hemisphere = TRUE,
-    pad.data.with.first.last.values = FALSE, tavg = NULL,
-    tavg.dates = NULL, quantiles = NULL,
-    temp.qtiles = c(0.1, 0.9), prec.qtiles = c(0.95, 0.99),
-    max.missing.days = c(annual = 15, monthly = 3),
-    min.base.data.fraction.present = 0.1)
+climdexInput.raw(tmax = NULL, tmin = NULL, prec = NULL,
+  tmax.dates = NULL, tmin.dates = NULL, prec.dates = NULL,
+  base.range = c(1961, 1990), n = 5, northern.hemisphere = TRUE,
+  tavg = NULL, tavg.dates = NULL, quantiles = NULL, temp.qtiles = c(0.1,
+  0.9), prec.qtiles = c(0.95, 0.99), max.missing.days = c(annual = 15,
+  monthly = 3), min.base.data.fraction.present = 0.1)
 }
 \arguments{
   \item{tmax}{Daily maximum temperature data.}
@@ -38,9 +40,6 @@
   \item{n}{Number of days to use as window for daily
   quantiles.}
 
-  \item{pad.data.with.first.last.values}{Base data padding
-  option (see notes).}
-
   \item{temp.qtiles}{Quantiles to calculate for temperature
   variables}
 
@@ -62,102 +61,21 @@
   month (monthly).}
 }
 \value{
-  An object of class \code{\link{climdexInput-class}} for
-  use with other climdex methods.
+An object of class \code{\link{climdexInput-class}} for use
+with other climdex methods.
 }
 \description{
-  This function creates a climdexInput object from data
-  already ingested into R.
-}
-\details{
-  This function takes input climate data at daily
-  resolution, and produces as output a ClimdexInput data
-  structure. This data structure can then be passed to any
-  of the routines used to compute the Climdex indices. The
-  indices themselves are specified on the webpage cited in
-  the references section. The \code{base.range} argument is
-  a pair of 4 digit years which bound the data on which the
-  base percentiles are calculated.
-
-  The \code{tmax}, \code{tmin}, and \code{prec} arguments
-  are numeric vectors containing the data on which the
-  indices are to be computed. The units are assumed to be
-  degrees C for temperature, and mm/day for precipitation.
-
-  The \code{tmax.dates}, \code{tmin.dates}, and
-  \code{prec.dates} arguments are vectors of type
-  \code{PCICt}.
-
-  The \code{n} argument specifies the size of the window
-  used when computing the percentiles used in
-  \code{\link{climdex.tx10p}}, \code{\link{climdex.tn10p}},
-  \code{\link{climdex.tx90p}}, and
-  \code{\link{climdex.tn90p}}.
-
-  The \code{northern.hemisphere} argument specifies whether
-  the data came from the northern hemisphere. If FALSE,
-  data is assumed to have come from the southern
-  hemisphere. This is used when computing growing season
-  length; if the data is from the southern hemisphere,
-  growing season length is the growing season starting in
-  the beginning of July of the year indicated, running to
-  the end of June of the following year.
-
-  The \code{pad.data.with.first.last.values} argument
-  specifies whether to pad the data passed into the
-  baseline quantile routine with the first and last values.
-  If TRUE, the first (at the beginning of the series) and
-  last (at the end of the series) values will be used to
-  pad the beginning and ends of this series. If FALSE,
-  either NA or the values for the previous two (at the
-  beginning) and last two (at the end) days of data will be
-  used.
-
-  The \code{quantiles} argument allows the user to supply
-  pre-computed quantiles. This is a list consisting of
-  quantiles for each variable.
-
-  For each temperature variable, there are separate lists
-  of quantiles for inbase and outbase, with these names. In
-  both cases, quantiles within these lists are named q10
-  for the 10th percentile and q90 for the 90th percentile.
-  Other percentiles would be named qnn for the nnth
-  percentile. For the outbase quantiles, each element in
-  the list is a vector of length 365 (or 360 in the case of
-  360-day calendars), corresponding to one value for each
-  day of the year. For the inbase quantiles, each element
-  in the list is an array of dimensions [365 or 360, nyr,
-  nyr - 1], where nyr is the number of years in the base
-  period. Each value corresponds to a quantile for each
-  day, for each year, with a particular year replaced.
-
-  For precipitation variables, there is a named vector of
-  quantiles, consisting of at least q95 and q99.
-
-  The \code{temp.qtiles} and \code{prec.qtiles} arguments
-  allow the user to modify the quantiles calculated. For
-  example, specifying temp.qtiles=c(0.10, 0.50, 0.90) would
-  calculate the 10th, 50th, and 90th percentiles for
-  temperature.
-
-  The \code{min.base.fraction.present} argument specifies
-  the minimum fraction of data which must be present for a
-  quantile to be calculated for a particular day. If the
-  fraction of data present is less than this threshold, the
-  quantile for that day will be set to NA.
-
-  The \code{max.missing.days} argument is a vector
-  consisting of 'annual' (the number of days that can be
-  missing in a year) and 'monthly' (the number of days that
-  can be missing in a month. If one month in a year fails
-  the test, the corresponding year will be omitted.
+For all data supplied, the associated dates must also be
+supplied.
 }
 \note{
-  Units are assumed to be mm/day for precipitation and
-  degrees Celsius for temperature. No units conversion is
-  performed internally.
+Units are assumed to be mm/day for precipitation and
+degrees Celsius for temperature. No units conversion is
+performed internally.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -175,11 +93,10 @@ ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdex.pcic-package}},
-  \code{\link{strptime}}.
+\code{\link{climdex.pcic-package}}, \code{\link{strptime}}.
 }
 \keyword{climate}
 \keyword{ts}

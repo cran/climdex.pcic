@@ -1,6 +1,3 @@
-library(caTools)
-library(PCICt)
-
 #' Get the last month and day of the year
 #'
 #' Get the last month and day of the year as a character sting, separated by
@@ -13,6 +10,7 @@ library(PCICt)
 #' @return A string (like "12-30", or "12-31")
 #' 
 #' @examples
+#' library(PCICt)
 #' last.mday <- get.last.monthday.of.year(as.PCICt("2011-01-01", cal="360"))
 #' 
 #' @export
@@ -68,7 +66,7 @@ valid.climdexInput <- function(x) {
     if(is.null(quantiles[n]))
       return(NULL)
     if(!(n %in% ls(envir=x@quantiles)))
-      return(paste("Quantiles for", n, "are missing.", sep=""))
+      return(paste("Quantiles for", n, "are missing."))
     return(NULL)
   })))
 
@@ -157,6 +155,7 @@ valid.climdexInput <- function(x) {
 #' @seealso \code{\link{climdexInput.csv}}, \code{\link{climdexInput.raw}}.
 #' @keywords climate ts
 #' @examples
+#' library(PCICt)
 #' 
 #' ## Parse the dates into PCICt.
 #' tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
@@ -232,24 +231,14 @@ get.jdays.replaced.feb29 <- function(jdays) {
 
 ## Get set of days for bootstrap use
 get.bootstrap.set <- function(dates, bootstrap.range, win.size) {
-  bootstrap.win.range <- get.bootstrap.windowed.range(bootstrap.range, win.size)
   dpy <- ifelse(is.null(attr(dates, "dpy")), 365, attr(dates, "dpy"))
-  return(dates >= bootstrap.win.range[1] & dates <= bootstrap.win.range[2] & (dpy == 360 | format(dates, format="%m-%d", tz="GMT") != "02-29"))
-}
-
-## Get bootstrap date range
-## Input is: bootstrap range, vector of 2 PCICt, win.size is window size in days (single integer)
-get.bootstrap.windowed.range <- function(bootstrap.range, win.size) {
-  ## Changed due to a bug in PCICt
-  ##window <- as.difftime(floor(win.size / 2), units="days")
-  window <- floor(win.size / 2) * 86400
-  return(c(bootstrap.range[1] - window, bootstrap.range[2] + window))
+  return(dates >= bootstrap.range[1] & dates <= bootstrap.range[2] & (dpy == 360 | format(dates, format="%m-%d", tz="GMT") != "02-29"))
 }
 
 ## Calculate a running quantile on the data set over the bootstrap range.
 ## If get.bootstrap.data is TRUE, use the Zhang boostrapping method described in Xuebin Zhang et al's 2005 paper, "Avoiding Inhomogeneity in Percentile-Based Indices of Temperature Extremes" J.Clim vol 18 pp.1647-1648, "Removing the 'jump'".
 ## Expects PCICt for all dates
-zhang.running.qtile <- function(x, dates.base, qtiles, bootstrap.range, include.mask=NULL, n=5, pad.data.with.first.last.values=FALSE, get.bootstrap.data=FALSE, min.fraction.present=0.1) {
+zhang.running.qtile <- function(x, dates.base, qtiles, bootstrap.range, include.mask=NULL, n=5, get.bootstrap.data=FALSE, min.fraction.present=0.1) {
   inset <- get.bootstrap.set(dates.base, bootstrap.range, n)
   dpy <- ifelse(is.null(attr(dates.base, "dpy")), 365, attr(dates.base, "dpy"))
   nyears <- floor(sum(inset) / dpy)
@@ -258,15 +247,10 @@ zhang.running.qtile <- function(x, dates.base, qtiles, bootstrap.range, include.
     x[include.mask] <- NA
 
   bs.data <- x[inset]
-  window <- floor(n / 2)
-  if(pad.data.with.first.last.values) {
-    bs.data[1:window] <- bs.data[window + 1]
-    bs.data[length(bs.data) - 0:(window - 1)] <- bs.data[length(bs.data) - window]
-  }
 
   qdat <- NULL
   if(get.bootstrap.data) {
-    d <- .Call("running_quantile_windowed_bootstrap", bs.data, n, qtiles, dpy, min.fraction.present, DUP=FALSE, PACKAGE='climdex.pcic')
+    d <- .Call("running_quantile_windowed_bootstrap", bs.data, n, qtiles, dpy, min.fraction.present, PACKAGE='climdex.pcic')
     dim(d) <- c(dpy, nyears, nyears - 1, length(qtiles))
     qdat <- lapply(1:length(qtiles), function(x) { r <- d[,,,x, drop=FALSE]; dim(r) <- dim(r)[1:3]; r })
   } else {
@@ -340,13 +324,13 @@ check.quantile.validity <- function(quantiles, present.vars, days.in.base) {
     stop("Precipitation quantiles must contain 95th and 99th percentiles.\n")
 }
 
-get.temp.var.quantiles <- function(filled.data, date.series, bs.date.series, qtiles, bs.date.range, n, pad.data.with.first.last.values, in.base=FALSE, min.base.data.fraction.present=0.1) {
+get.temp.var.quantiles <- function(filled.data, date.series, bs.date.series, qtiles, bs.date.range, n, in.base=FALSE, min.base.data.fraction.present=0.1) {
   base.data <- create.filled.series(filled.data, date.series, bs.date.series)
   if(in.base)
-    return(list(outbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, pad.data.with.first.last.values=pad.data.with.first.last.values, min.fraction.present=min.base.data.fraction.present),
-                inbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, pad.data.with.first.last.values=pad.data.with.first.last.values, get.bootstrap.data=TRUE, min.fraction.present=min.base.data.fraction.present)))
+    return(list(outbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, min.fraction.present=min.base.data.fraction.present),
+                inbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, get.bootstrap.data=TRUE, min.fraction.present=min.base.data.fraction.present)))
   else
-    return(list(outbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, pad.data.with.first.last.values=pad.data.with.first.last.values, min.fraction.present=min.base.data.fraction.present)))
+    return(list(outbase=zhang.running.qtile(base.data, dates.base=bs.date.series, qtiles=c(0.1, 0.9), bootstrap.range=bs.date.range, n=n, min.fraction.present=min.base.data.fraction.present)))
 }
 
 get.prec.var.quantiles <- function(filled.prec, date.series, bs.date.range, qtiles=c(0.95, 0.99)) {
@@ -369,7 +353,7 @@ get.prec.var.quantiles <- function(filled.prec, date.series, bs.date.range, qtil
 #' For more details on arguments, see \code{link{climdexInput.raw}}.
 #'
 #' @seealso \code{\link{climdex.pcic-package}}, \code{\link{climdexInput.raw}}.
-#' @references \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+#' @references \url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 #' @keywords ts climate
 #'
 #' @param tmax Daily maximum temperature data.
@@ -385,6 +369,7 @@ get.prec.var.quantiles <- function(filled.prec, date.series, bs.date.range, qtil
 #' for temperature. No units conversion is performed internally.
 #' 
 #' @examples
+#' library(PCICt)
 #' 
 #' ## Create a climdexInput object from some data already loaded in and
 #' ## ready to go.
@@ -403,7 +388,7 @@ get.prec.var.quantiles <- function(filled.prec, date.series, bs.date.range, qtil
 #' tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 #'
 #' @export
-get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, tmin.dates=NULL, prec.dates=NULL, base.range=c(1961, 1990), n=5, pad.data.with.first.last.values=FALSE, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), min.base.data.fraction.present=0.1) {
+get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, tmin.dates=NULL, prec.dates=NULL, base.range=c(1961, 1990), n=5, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), min.base.data.fraction.present=0.1) {
   days.threshold <- 359
   check.basic.argument.validity(tmax, tmin, prec, tmax.dates, tmin.dates, prec.dates, base.range, n)
   
@@ -415,24 +400,22 @@ get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=
   bs.date.range <- as.PCICt(paste(base.range, c("01-01", last.day.of.year), sep="-"), cal=cal)
   new.date.range <- as.PCICt(paste(as.numeric(format(range(all.dates), "%Y", tz="GMT")), c("01-01", last.day.of.year), sep="-"), cal=cal)
   date.series <- seq(new.date.range[1], new.date.range[2], by="day")
-
-  bs.win.date.range <- get.bootstrap.windowed.range(bs.date.range, n)
-  bs.date.series <- seq(bs.win.date.range[1], bs.win.date.range[2], by="day")
-
+  bs.date.series <- seq(bs.date.range[1], bs.date.range[2], by="day")
+  
   quantiles <- list()
 
   if(!is.null(tmax)) {
     if(get.num.days.in.range(tmax.dates, bs.date.range) <= days.threshold)
       stop("There is less than a year of tmax data within the base period. Consider revising your base range and/or check your input data.")
     filled.tmax <- create.filled.series(tmax, trunc(tmax.dates, "days"), date.series)
-    quantiles$tmax <- get.temp.var.quantiles(filled.tmax, date.series, bs.date.series, temp.qtiles, bs.date.range, n, pad.data.with.first.last.values)
+    quantiles$tmax <- get.temp.var.quantiles(filled.tmax, date.series, bs.date.series, temp.qtiles, bs.date.range, n)
   } 
 
   if(!is.null(tmin)) {
     if(get.num.days.in.range(tmin.dates, bs.date.range) <= days.threshold)
       stop("There is less than a year of tmin data within the base period. Consider revising your base range and/or check your input data.")
     filled.tmin <- create.filled.series(tmin, trunc(tmin.dates, "days"), date.series)
-    quantiles$tmin <- get.temp.var.quantiles(filled.tmin, date.series, bs.date.series, temp.qtiles, bs.date.range, n, pad.data.with.first.last.values)
+    quantiles$tmin <- get.temp.var.quantiles(filled.tmin, date.series, bs.date.series, temp.qtiles, bs.date.range, n)
   }
 
   if(!is.null(prec)) {
@@ -475,13 +458,6 @@ get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=
 #' growing season starting in the beginning of July of the year indicated,
 #' running to the end of June of the following year.
 #' 
-#' The \code{pad.data.with.first.last.values} argument specifies whether to pad
-#' the data passed into the baseline quantile routine with the first and last
-#' values. If TRUE, the first (at the beginning of the series) and last (at the
-#' end of the series) values will be used to pad the beginning and ends of this
-#' series. If FALSE, either NA or the values for the previous two (at the
-#' beginning) and last two (at the end) days of data will be used.
-#' 
 #' The \code{quantiles} argument allows the user to supply pre-computed quantiles.
 #' This is a list consisting of quantiles for each variable.
 #' 
@@ -515,7 +491,7 @@ get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=
 #' the test, the corresponding year will be omitted.
 #' 
 #' @seealso \code{\link{climdex.pcic-package}}, \code{\link{strptime}}.
-#' @references \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+#' @references \url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 #' @keywords ts climate
 #'
 #' @template climdexInput_raw_help1 
@@ -531,7 +507,8 @@ get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=
 #' for temperature. No units conversion is performed internally.
 #' 
 #' @examples
-#' 
+#' library(PCICt)
+#'
 #' ## Create a climdexInput object from some data already loaded in and
 #' ## ready to go.
 #' 
@@ -551,7 +528,7 @@ get.outofbase.quantiles <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=
 #' @export
 climdexInput.raw <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, tmin.dates=NULL, prec.dates=NULL,
                              base.range=c(1961, 1990), n=5, northern.hemisphere=TRUE,
-                             pad.data.with.first.last.values=FALSE, tavg=NULL, tavg.dates=NULL, quantiles=NULL, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), max.missing.days=c(annual=15, monthly=3), min.base.data.fraction.present=0.1) {
+                             tavg=NULL, tavg.dates=NULL, quantiles=NULL, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), max.missing.days=c(annual=15, monthly=3), min.base.data.fraction.present=0.1) {
   ## Make sure all of these arguments are valid...
   check.basic.argument.validity(tmax, tmin, prec, tmax.dates, tmin.dates, prec.dates, base.range, n, tavg, tavg.dates)
 
@@ -565,7 +542,8 @@ climdexInput.raw <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, t
 
   ## Convert base range (in years) to PCICt
   bs.date.range <- as.PCICt(paste(base.range, c("01-01", last.day.of.year), sep="-"), cal=cal)
-
+  bs.date.series <- seq(bs.date.range[1], bs.date.range[2], by="day")
+  
   ## Get dates for normal data
   new.date.range <- as.PCICt(paste(as.numeric(format(range(all.dates), "%Y", tz="GMT")), c("01-01", last.day.of.year), sep="-"), cal=cal)
   date.series <- seq(new.date.range[1], new.date.range[2], by="day")
@@ -601,15 +579,15 @@ climdexInput.raw <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, t
   ## Pad data passed as base if we're missing endpoints...
   if(!have.quantiles) {
     quantiles <- new.env(parent=emptyenv())
-    bs.win.date.range <- get.bootstrap.windowed.range(bs.date.range, n)
-    bs.date.series <- seq(bs.win.date.range[1], bs.win.date.range[2], by="day")
 
     if(days.in.base['tmax'] > days.threshold)
-      delayedAssign("tmax", get.temp.var.quantiles(filled.list$tmax, date.series, bs.date.series, temp.qtiles, bs.date.range, n, pad.data.with.first.last.values, TRUE, min.base.data.fraction.present), assign.env=quantiles)
+      delayedAssign("tmax", get.temp.var.quantiles(filled.list$tmax, date.series, bs.date.series, temp.qtiles, bs.date.range, n, TRUE, min.base.data.fraction.present), assign.env=quantiles)
     if(days.in.base['tmin'] > days.threshold)
-      delayedAssign("tmin", get.temp.var.quantiles(filled.list$tmin, date.series, bs.date.series, temp.qtiles, bs.date.range, n, pad.data.with.first.last.values, TRUE, min.base.data.fraction.present), assign.env=quantiles)
+      delayedAssign("tmin", get.temp.var.quantiles(filled.list$tmin, date.series, bs.date.series, temp.qtiles, bs.date.range, n, TRUE, min.base.data.fraction.present), assign.env=quantiles)
     if(days.in.base['prec'] > days.threshold)
       delayedAssign("prec", get.prec.var.quantiles(filled.list$prec, date.series, bs.date.range, prec.qtiles), assign.env=quantiles)
+  } else {
+    quantiles <- as.environment(quantiles)
   }
   
   return(new("climdexInput", data=filled.list, quantiles=quantiles, namasks=namasks, dates=date.series, jdays=jdays, base.range=bs.date.range, date.factors=date.factors, northern.hemisphere=northern.hemisphere, max.missing.days=max.missing.days))
@@ -652,7 +630,7 @@ climdexInput.raw <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, t
 #' For more details on arguments, see \code{link{climdexInput.raw}}.
 #'
 #' @seealso \code{\link{climdex.pcic-package}}, \code{\link{climdexInput.raw}}.
-#' @references \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+#' @references \url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 #' @keywords ts climate
 #' 
 #' @param tmax.file Name of file containing daily maximum temperature data.
@@ -683,7 +661,7 @@ climdexInput.raw <- function(tmax=NULL, tmin=NULL, prec=NULL, tmax.dates=NULL, t
 climdexInput.csv <- function(tmax.file=NULL, tmin.file=NULL, prec.file=NULL,
                              data.columns=list(tmin="tmin", tmax="tmax", prec="prec"), base.range=c(1961, 1990),
                              na.strings=NULL, cal="gregorian", date.types=NULL, n=5, northern.hemisphere=TRUE,
-                             pad.data.with.first.last.values=FALSE, tavg.file=NULL, quantiles=NULL, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), max.missing.days=c(annual=15, monthly=3), min.base.data.fraction.present=0.1) {
+                             tavg.file=NULL, quantiles=NULL, temp.qtiles=c(0.10, 0.90), prec.qtiles=c(0.95, 0.99), max.missing.days=c(annual=15, monthly=3), min.base.data.fraction.present=0.1) {
   get.and.check.data <- function(fn, datacol) {
     if(!is.null(fn)) {
       dat <- read.csv(fn, na.strings=na.strings)
@@ -705,7 +683,7 @@ climdexInput.csv <- function(tmax.file=NULL, tmin.file=NULL, prec.file=NULL,
   tavg <- get.and.check.data(tavg.file, data.columns$tavg)
   prec <- get.and.check.data(prec.file, data.columns$prec)
   
-  return(climdexInput.raw(tmax=tmax$dat, tmin=tmin$dat, prec=prec$dat, tmax.dates=tmax$dates, tmin.dates=tmin$dates, prec.dates=prec$dates, base.range=base.range, n=n, northern.hemisphere=northern.hemisphere, pad.data.with.first.last.values=pad.data.with.first.last.values, tavg=tavg$dat, tavg.dates=tavg$dates, quantiles=quantiles, temp.qtiles=temp.qtiles, prec.qtiles=prec.qtiles, max.missing.days=max.missing.days, min.base.data.fraction.present=min.base.data.fraction.present))
+  return(climdexInput.raw(tmax=tmax$dat, tmin=tmin$dat, prec=prec$dat, tmax.dates=tmax$dates, tmin.dates=tmin$dates, prec.dates=prec$dates, base.range=base.range, n=n, northern.hemisphere=northern.hemisphere, tavg=tavg$dat, tavg.dates=tavg$dates, quantiles=quantiles, temp.qtiles=temp.qtiles, prec.qtiles=prec.qtiles, max.missing.days=max.missing.days, min.base.data.fraction.present=min.base.data.fraction.present))
 }
 
 #' Frost Days
@@ -819,7 +797,7 @@ climdex.tr <- function(ci) { stopifnot(!is.null(ci@data$tmin)); return(number.da
 #' this parameter being present in future versions of climdex.pcic.
 #' @seealso \code{\link{growing.season.length}},
 #' \code{\link{climdexInput.csv}}.
-#' @references \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+#' @references \url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 #' @keywords ts climate
 #' @templateVar cdxvar gsl
 #' @templateVar cdxdescription an annual timeseries of the growing season length in days.
@@ -1295,6 +1273,7 @@ climdex.prcptot <- function(ci) { stopifnot(!is.null(ci@data$prec)); return(tota
 #' @return A vector containing an annual timeseries of precipitation in wet days.
 #'
 #' @examples
+#' library(PCICt)
 #'
 #' ## Create a climdexInput object from some data already loaded in and
 #' ## ready to go.
@@ -1386,7 +1365,8 @@ get.series.lengths.at.ends <- function(x, na.value=FALSE) {
 #' in the given time period (as specified by \code{date.factor}).
 #' @keywords ts climate
 #' @examples
-#' 
+#' library(PCICt)
+#'
 #' ## Parse the dates into PCICt.
 #' tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
 #' "jday")]), format="%Y %j", cal="gregorian")
@@ -1443,6 +1423,7 @@ number.days.op.threshold <- function(temp, date.factor, threshold, op="<") {
 #' @seealso \code{\link{climdex.gsl}}, \code{\link{climdexInput.csv}}.
 #' @keywords ts climate
 #' @examples
+#' library(PCICt)
 #' 
 #' ## Create a climdexInput object from some data already loaded in and
 #' ## ready to go.
@@ -1525,6 +1506,7 @@ growing.season.length <- function(daily.mean.temp, date.factor, dates, northern.
 #' @seealso \link{climdexInput-class}.
 #' @keywords ts climate
 #' @examples
+#' library(PCICt)
 #' 
 #' ## Parse the dates into PCICt.
 #' tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
@@ -1669,6 +1651,7 @@ mean.daily.temp.range <- function(daily.max.temp, daily.min.temp, date.factor) {
 #' time interval.
 #' @keywords ts climate
 #' @examples
+#' library(PCICt)
 #' 
 #' ## Parse the dates into PCICt.
 #' tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
@@ -1806,9 +1789,8 @@ total.precip.op.threshold <- function(daily.prec, date.factor, threshold, op) {
 }
 
 ## Returns an n-day running quantile for each day of data (dimensions c(dpy, q))
-## Data is assumed to be padded by floor(n/2) days on either end, and data is assumed to start on the (dpy - floor(n/2) + 1)'th day..
 running.quantile <- function(data, n, q, dpy, min.fraction) {
-  ret <- .Call("running_quantile_windowed", data, n, q, dpy, min.fraction, DUP=FALSE, PACKAGE='climdex.pcic')
+  ret <- .Call("running_quantile_windowed", data, n, q, dpy, min.fraction, PACKAGE='climdex.pcic')
   dim(ret) <- c(length(q), dpy)
   return(t(ret))
 }
@@ -1871,3 +1853,5 @@ select.blocks.gt.length <- function(d, n, na.value=FALSE) {
 climdex.quantile <- function(x, q=c(0, 0.25, 0.5, 0.75, 1)) {
   return(.Call("c_quantile2", as.double(x), q, PACKAGE='climdex.pcic'))
 }
+
+

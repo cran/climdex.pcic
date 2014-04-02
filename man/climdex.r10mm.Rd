@@ -2,23 +2,25 @@
 \alias{climdex.r10mm}
 \title{Precipitation Exceeding 10mm Per Day}
 \usage{
-  climdex.r10mm(ci)
+climdex.r10mm(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing the value of the index for each year.
+A vector containing the value of the index for each year.
 }
 \description{
-  This function computes the climdex index R10mm.
+This function computes the climdex index R10mm.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index R10mm: the annual count of
-  days where daily precipitation is more than 10mm per day.
+This function takes a climdexInput object as input and
+computes the climdex index R10mm: the annual count of days
+where daily precipitation is more than 10mm per day.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -39,11 +41,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 r10mm <- climdex.r10mm(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

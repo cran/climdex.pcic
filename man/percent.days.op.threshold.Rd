@@ -2,9 +2,9 @@
 \alias{percent.days.op.threshold}
 \title{Lengths of strings of TRUE values}
 \usage{
-  percent.days.op.threshold(temp, dates, jdays,
-    date.factor, threshold.outside.base, base.thresholds,
-    base.range, op = "<", max.missing.days)
+percent.days.op.threshold(temp, dates, jdays, date.factor,
+  threshold.outside.base, base.thresholds, base.range, op = "<",
+  max.missing.days)
 }
 \arguments{
   \item{temp}{Sequence of temperature values.}
@@ -31,24 +31,26 @@
   time period.}
 }
 \value{
-  A vector consisting of the mean fraction of days above or
-  below the supplied set of thresholds.
+A vector consisting of the mean fraction of days above or
+below the supplied set of thresholds.
 }
 \description{
-  Computes fraction of days above or below the baseline
-  threshold for each day, and averages them using the date
-  factor passed in.
+Computes fraction of days above or below the baseline
+threshold for each day, and averages them using the date
+factor passed in.
 }
 \details{
-  This function computes fractions of days above or below
-  baseline thresholds for each day, then aggregates them
-  using \code{date.factor}. It is used to implement TN/TX
-  10/90p.
+This function computes fractions of days above or below
+baseline thresholds for each day, then aggregates them
+using \code{date.factor}. It is used to implement TN/TX
+10/90p.
 }
 \note{
-  If date.factor is omitted, daily series will be returned.
+If date.factor is omitted, daily series will be returned.
 }
 \examples{
+library(PCICt)
+
 ## Parse the dates into PCICt.
 tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
 "jday")]), format="\%Y \%j", cal="gregorian")
@@ -72,7 +74,7 @@ tx90p <- percent.days.op.threshold(ci@data$tmax, ci@dates, ci@jdays,
          ci@namasks$monthly$tmax
 }
 \seealso{
-  \link{climdexInput-class}.
+\link{climdexInput-class}.
 }
 \keyword{climate}
 \keyword{ts}

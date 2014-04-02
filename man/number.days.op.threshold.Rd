@@ -2,8 +2,7 @@
 \alias{number.days.op.threshold}
 \title{Number of days (less than, greater than, etc) a threshold}
 \usage{
-  number.days.op.threshold(temp, date.factor, threshold,
-    op = "<")
+number.days.op.threshold(temp, date.factor, threshold, op = "<")
 }
 \arguments{
   \item{temp}{Sequence temperature values.}
@@ -15,22 +14,24 @@
   \item{op}{Operator to use for comparison.}
 }
 \value{
-  A vector consisting of the number of values that meet the
-  criteria in the given time period (as specified by
-  \code{date.factor}).
+A vector consisting of the number of values that meet the
+criteria in the given time period (as specified by
+\code{date.factor}).
 }
 \description{
-  Produces sums of values that exceed (or are below) the
-  specified threshold.
+Produces sums of values that exceed (or are below) the
+specified threshold.
 }
 \details{
-  This function takes a data series, a threshold, an
-  operator, and a factor to aggregate by. It uses the
-  operator to compare the threshold to the data series,
-  creating a series of booleans, then sums the booleans
-  according to the factor.
+This function takes a data series, a threshold, an
+operator, and a factor to aggregate by. It uses the
+operator to compare the threshold to the data series,
+creating a series of booleans, then sums the booleans
+according to the factor.
 }
 \examples{
+library(PCICt)
+
 ## Parse the dates into PCICt.
 tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
 "jday")]), format="\%Y \%j", cal="gregorian")

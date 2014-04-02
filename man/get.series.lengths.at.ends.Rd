@@ -2,7 +2,7 @@
 \alias{get.series.lengths.at.ends}
 \title{Get series length at ends}
 \usage{
-  get.series.lengths.at.ends(x, na.value = FALSE)
+get.series.lengths.at.ends(x, na.value = FALSE)
 }
 \arguments{
   \item{x}{Sequence of booleans.}
@@ -10,20 +10,19 @@
   \item{na.value}{Value to replace NAs with.}
 }
 \value{
-  A vector consisting of the lengths of sequences of TRUE
-  values at the location of the last TRUE value in the
-  sequence, and zeroes elsewhere.
+A vector consisting of the lengths of sequences of TRUE
+values at the location of the last TRUE value in the
+sequence, and zeroes elsewhere.
 }
 \description{
-  This function takes a series of boolean values and
-  returns a list of integers of the same length
-  corresponding to the lengths at the ends of sequences of
-  TRUE values.
+This function takes a series of boolean values and returns
+a list of integers of the same length corresponding to the
+lengths at the ends of sequences of TRUE values.
 }
 \details{
-  It can often be useful to know how long a series of
-  boolean values is. This function provides a method of
-  knowing where and how long such sequences are.
+It can often be useful to know how long a series of boolean
+values is. This function provides a method of knowing where
+and how long such sequences are.
 }
 \examples{
 ## Get lengths of sequences of TRUE values in a sequence

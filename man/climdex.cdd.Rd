@@ -1,8 +1,10 @@
 \name{climdex.cdd}
 \alias{climdex.cdd}
-\title{Maximum Consecutive Dry Days}
+\title{The \code{spells.can.span.years} option specifies whether spells can cross
+year boundaries -- i.e., span years. The default for this is the same as for
+fclimdex.}
 \usage{
-  climdex.cdd(ci, spells.can.span.years = TRUE)
+climdex.cdd(ci, spells.can.span.years = TRUE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -11,19 +13,16 @@
   span years}
 }
 \value{
-  A vector containing the length of the spell for each
-  year.
+A vector containing the length of the spell for each year.
 }
 \description{
-  This function computes the climdex index CDD.
-}
-\details{
-  This function computes the climdex index CDD: the annual
-  maximum length of dry spells, in days. Dry spells are
-  considered to be sequences of days where daily
-  preciptation is less than 1mm per day.
+The \code{spells.can.span.years} option specifies whether
+spells can cross year boundaries -- i.e., span years. The
+default for this is the same as for fclimdex.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -44,12 +43,12 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 cdd <- climdex.cdd(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}},
-  \code{\link{spell.length.max}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}},
+\code{\link{spell.length.max}}.
 }
 \keyword{climate}
 \keyword{ts}

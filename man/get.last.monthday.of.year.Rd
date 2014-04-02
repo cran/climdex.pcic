@@ -2,7 +2,7 @@
 \alias{get.last.monthday.of.year}
 \title{Get the last month and day of the year}
 \usage{
-  get.last.monthday.of.year(d, sep = "-")
+get.last.monthday.of.year(d, sep = "-")
 }
 \arguments{
   \item{d}{An exemplar date.}
@@ -10,17 +10,18 @@
   \item{sep}{Separator to use.}
 }
 \value{
-  A string (like "12-30", or "12-31")
+A string (like "12-30", or "12-31")
 }
 \description{
-  Get the last month and day of the year as a character
-  sting, separated by the specified separator.
+Get the last month and day of the year as a character
+sting, separated by the specified separator.
 }
 \details{
-  This is a utility function necessitated by 360-day
-  calendars. Works on PCICt objects.
+This is a utility function necessitated by 360-day
+calendars. Works on PCICt objects.
 }
 \examples{
+library(PCICt)
 last.mday <- get.last.monthday.of.year(as.PCICt("2011-01-01", cal="360"))
 }
 

@@ -2,7 +2,7 @@
 \alias{climdex.dtr}
 \title{Mean Diurnal Temperature Range}
 \usage{
-  climdex.dtr(ci, freq = c("monthly", "annual"))
+climdex.dtr(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,23 +10,25 @@
   \item{freq}{Time frequency to aggregate to.}
 }
 \value{
-  A vector containing the mean monthly or mean annual
-  diurnal temperature range.
+A vector containing the mean monthly or mean annual diurnal
+temperature range.
 }
 \description{
-  This function computes the diurnal temperature range on a
-  monthly basis.
+This function computes the diurnal temperature range on a
+monthly basis.
 }
 \details{
-  \code{climdex.dtr} computes the mean daily diurnal
-  temperature range. The frequency of observation can be
-  either monthly or annual.
+\code{climdex.dtr} computes the mean daily diurnal
+temperature range. The frequency of observation can be
+either monthly or annual.
 }
 \note{
-  This function creates results which may differ in the 3rd
-  decimal place from the results from fclimdex.
+This function creates results which may differ in the 3rd
+decimal place from the results from fclimdex.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -47,11 +49,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 dtr <- climdex.dtr(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

@@ -4,71 +4,70 @@
 \alias{climdexInput-class}
 \title{climdexInput}
 \description{
-  The climdexInput class contains all the data necessary to
-  compute the climdex indices.
+The climdexInput class contains all the data necessary to
+compute the climdex indices.
 }
 \details{
-  The \code{climdexInput} class consists of all the data
-  necessary to compute the climdex indices. Users will not
-  need to modify any of the slots in this class. That being
-  said, users may want or need to repurpose this data for
-  further analysis. The following description of the data
-  is aimed at that audience.
+The \code{climdexInput} class consists of all the data
+necessary to compute the climdex indices. Users will not
+need to modify any of the slots in this class. That being
+said, users may want or need to repurpose this data for
+further analysis. The following description of the data is
+aimed at that audience.
 
-  The \code{data} slot contains time series' of daily data
-  of equal length for each of the provided variables.
-  Missing days have been replaced with NA. The \code{dates}
-  slot is the corresponding series of dates (of type PCICt)
-  for the daily data.
+The \code{data} slot contains time series' of daily data of
+equal length for each of the provided variables. Missing
+days have been replaced with NA. The \code{dates} slot is
+the corresponding series of dates (of type PCICt) for the
+daily data.
 
-  The \code{quantiles} slot contains quantiles used for
-  computing the tn/tx 10/90p indices, w/csdi, r95ptot, and
-  r99ptot. If precipitation data is supplied, the 'prec'
-  member contains the 95th and 99th percentile values for
-  precipitation within the base period. For tmin and tmax,
-  if present each will have a corresponding member in the
-  slot. Within each of these, there will be an 'inbase' and
-  'outbase' member, corresponding to thresholds to be used
-  within the base period (inbase) and outside the base
-  period (outbase). The 'inbase' member consists of one
-  percentile for each day of the year, computed using an
-  n-day (default is 5-day) running window surrounding that
-  day. These percentiles are computed for at least the 10th
-  and 90th percentile of the data. For the 'outbase'
-  member, given n years of data to use as the base period,
-  there are n * (n - 1) sets of daily quantiles of the same
-  type as those in 'inbase'.
+The \code{quantiles} slot contains quantiles used for
+computing the tn/tx 10/90p indices, w/csdi, r95ptot, and
+r99ptot. If precipitation data is supplied, the 'prec'
+member contains the 95th and 99th percentile values for
+precipitation within the base period. For tmin and tmax, if
+present each will have a corresponding member in the slot.
+Within each of these, there will be an 'inbase' and
+'outbase' member, corresponding to thresholds to be used
+within the base period (inbase) and outside the base period
+(outbase). The 'inbase' member consists of one percentile
+for each day of the year, computed using an n-day (default
+is 5-day) running window surrounding that day. These
+percentiles are computed for at least the 10th and 90th
+percentile of the data. For the 'outbase' member, given n
+years of data to use as the base period, there are n * (n -
+1) sets of daily quantiles of the same type as those in
+'inbase'.
 
-  To ease computation of monthly and annual data,
-  \code{date.factors} contains date factors which group
-  data into annual and monthly time buckets. They are of
-  the same length as the time series and can be reused for
-  computation of any annual or monthly aggregates.
+To ease computation of monthly and annual data,
+\code{date.factors} contains date factors which group data
+into annual and monthly time buckets. They are of the same
+length as the time series and can be reused for computation
+of any annual or monthly aggregates.
 
-  The climdexInput class also includes NA masks for both
-  monthly and annual as parts of the \code{namasks} slot.
-  Each of these masks consist of a vector of numbers of the
-  same length as the monthly or annual output data. The
-  values used are 1 to signify that the data meets the QC
-  criteria, and NA to signify it does not. Years with more
-  than (by default) 15 days missing, and months with more
-  than (by default) 3 days missing, are considered to be of
-  poor quality and are masked here with NA. These
-  thresholds can be set when instantiating the object, and
-  are stored in the \code{max.missing.days} slot.
+The climdexInput class also includes NA masks for both
+monthly and annual as parts of the \code{namasks} slot.
+Each of these masks consist of a vector of numbers of the
+same length as the monthly or annual output data. The
+values used are 1 to signify that the data meets the QC
+criteria, and NA to signify it does not. Years with more
+than (by default) 15 days missing, and months with more
+than (by default) 3 days missing, are considered to be of
+poor quality and are masked here with NA. These thresholds
+can be set when instantiating the object, and are stored in
+the \code{max.missing.days} slot.
 
-  The \code{base.range} slot contains vector of type PCICt
-  containing the first and last day included in the
-  baseline.
+The \code{base.range} slot contains vector of type PCICt
+containing the first and last day included in the baseline.
 
-  The \code{northern.hemisphere} slot contains a boolean
-  indicating whether the data came from the northern
-  hemisphere. If FALSE, data is assumed to have come from
-  the southern hemisphere. This is used when computing
-  growing season length; if the data is from the southern
-  hemisphere, growing season length is the growing season
-  starting in the beginning of July of the year indicated,
-  running to the end of June of the following year.
+The \code{northern.hemisphere} slot contains a boolean
+indicating whether the data came from the northern
+hemisphere. If FALSE, data is assumed to have come from the
+southern hemisphere. This is used when computing growing
+season length; if the data is from the southern hemisphere,
+growing season length is the growing season starting in the
+beginning of July of the year indicated, running to the end
+of June of the following year.
 }
 \section{Slots}{
   \describe{ \item{data}{Time series of supplied data
@@ -86,6 +85,8 @@
   data.} }
 }
 \examples{
+library(PCICt)
+
 ## Parse the dates into PCICt.
 tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
 "jday")]), format="\%Y \%j", cal="gregorian")
@@ -100,8 +101,8 @@ ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 }
 \seealso{
-  \code{\link{climdexInput.csv}},
-  \code{\link{climdexInput.raw}}.
+\code{\link{climdexInput.csv}},
+\code{\link{climdexInput.raw}}.
 }
 \keyword{climate}
 \keyword{ts}

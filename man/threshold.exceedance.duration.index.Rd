@@ -2,10 +2,9 @@
 \alias{threshold.exceedance.duration.index}
 \title{Sum of spell lengths exceeding daily threshold}
 \usage{
-  threshold.exceedance.duration.index(daily.temp,
-    date.factor, jdays, thresholds, op = ">",
-    min.length = 6, spells.can.span.years = TRUE,
-    max.missing.days)
+threshold.exceedance.duration.index(daily.temp, date.factor, jdays, thresholds,
+  op = ">", min.length = 6, spells.can.span.years = TRUE,
+  max.missing.days)
 }
 \arguments{
   \item{daily.temp}{Data to compute index on.}
@@ -29,26 +28,26 @@
   time period.}
 }
 \value{
-  A timeseries of maximum spell lengths for each period.
+A timeseries of maximum spell lengths for each period.
 }
 \description{
-  This function returns the number of spells of more than
-  \code{min.length} days which exceed or are below the
-  given threshold.
+This function returns the number of spells of more than
+\code{min.length} days which exceed or are below the given
+threshold.
 }
 \details{
-  This routine compares data to the thresholds using the
-  given operator, generating a series of TRUE or FALSE
-  values; these values are then filtered to remove any
-  sequences of less than \code{min.length} days of TRUE
-  values. It then computes the lengths of the remaining
-  sequences of TRUE values (spells) and sums their lengths.
+This routine compares data to the thresholds using the
+given operator, generating a series of TRUE or FALSE
+values; these values are then filtered to remove any
+sequences of less than \code{min.length} days of TRUE
+values. It then computes the lengths of the remaining
+sequences of TRUE values (spells) and sums their lengths.
 
-  The \code{spells.can.span.years} option controls whether
-  spells must always terminate at the end of a period, or
-  whether they may continue until the criteria ceases to be
-  met or the end of the data is reached. The default for
-  fclimdex is FALSE.
+The \code{spells.can.span.years} option controls whether
+spells must always terminate at the end of a period, or
+whether they may continue until the criteria ceases to be
+met or the end of the data is reached. The default for
+fclimdex is FALSE.
 }
 \examples{
 prec.dat <- c(0.1, 3.0, 4.3, 1.9, 1.3, 6.0, 0, 0, 4.0, 1)
@@ -63,7 +62,7 @@ tedi <- threshold.exceedance.duration.index(prec.dat, phony.date.factor,
 rep(1:5, 2), rep(1, 5), ">=", 2, FALSE, 1)
 }
 \seealso{
-  \code{\link{climdex.wsdi}}.
+\code{\link{climdex.wsdi}}.
 }
 \keyword{climate}
 \keyword{ts}

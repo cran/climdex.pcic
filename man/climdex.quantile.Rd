@@ -2,7 +2,7 @@
 \alias{climdex.quantile}
 \title{Climdex quantile function}
 \usage{
-  climdex.quantile(x, q = c(0, 0.25, 0.5, 0.75, 1))
+climdex.quantile(x, q = c(0, 0.25, 0.5, 0.75, 1))
 }
 \arguments{
   \item{x}{Data to compute quantiles on.}
@@ -10,22 +10,22 @@
   \item{q}{Quantiles to be computed.}
 }
 \value{
-  A vector of the quantiles in question.
+A vector of the quantiles in question.
 }
 \description{
-  This function implements R's type=8 in a more efficient
-  manner.
+This function implements R's type=8 in a more efficient
+manner.
 }
 \details{
-  This is a reimplementation of R's type=8 created to
-  improve the efficiency of this package.
+This is a reimplementation of R's type=8 created to improve
+the efficiency of this package.
 }
 \examples{
 ## Compute 10th, 50th, and 90th percentile of example data.
 climdex.quantile(1:10, c(0.1, 0.5, 0.9))
 }
 \seealso{
-  \code{\link{quantile}}
+\code{\link{quantile}}
 }
 \keyword{climate}
 \keyword{ts}

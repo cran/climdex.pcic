@@ -2,7 +2,7 @@
 \alias{climdex.rx1day}
 \title{Monthly Maximum 1-day Precipitation}
 \usage{
-  climdex.rx1day(ci, freq = c("monthly", "annual"))
+climdex.rx1day(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,27 +10,29 @@
   \item{freq}{Time frequency to aggregate to.}
 }
 \value{
-  A vector containing the value of the index for each month
-  of each year.
+A vector containing the value of the index for each month
+of each year.
 }
 \description{
-  This function computes the climdex index Rx1day.
+This function computes the climdex index Rx1day.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index Rx1day: monthly or annual
-  maximum 1-day precipitation.
+This function takes a climdexInput object as input and
+computes the climdex index Rx1day: monthly or annual
+maximum 1-day precipitation.
 }
 \note{
-  The default behaviour of climdex.rx5day differs somewhat
-  from fclimdex, as fclimdex and climdex.pcic differ on the
-  definition of Rx5day. The running sum series computed by
-  fclimdex is off by 2 days, and the first day a running
-  sum can be computed for is left out entirely. The
-  behaviour of fclimdex can be replicated by setting
-  center.mean.on.last.day to TRUE.
+The default behaviour of climdex.rx5day differs somewhat
+from fclimdex, as fclimdex and climdex.pcic differ on the
+definition of Rx5day. The running sum series computed by
+fclimdex is off by 2 days, and the first day a running sum
+can be computed for is left out entirely. The behaviour of
+fclimdex can be replicated by setting
+center.mean.on.last.day to TRUE.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -51,11 +53,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 rx1day <- climdex.rx1day(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

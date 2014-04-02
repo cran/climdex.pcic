@@ -2,8 +2,8 @@
 \alias{climdex.rx5day}
 \title{Monthly Maximum 5-day Consecutive Precipitation}
 \usage{
-  climdex.rx5day(ci, freq = c("monthly", "annual"),
-    center.mean.on.last.day = FALSE)
+climdex.rx5day(ci, freq = c("monthly", "annual"),
+  center.mean.on.last.day = FALSE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -15,27 +15,29 @@
   of the center day.}
 }
 \value{
-  A vector containing the value of the index for each month
-  of each year.
+A vector containing the value of the index for each month
+of each year.
 }
 \description{
-  This function computes the climdex index Rx5day.
+This function computes the climdex index Rx5day.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index Rx5day: monthly or annual
-  maximum 5-day consecutive precipitation.
+This function takes a climdexInput object as input and
+computes the climdex index Rx5day: monthly or annual
+maximum 5-day consecutive precipitation.
 }
 \note{
-  The default behaviour of climdex.rx5day differs somewhat
-  from fclimdex, as fclimdex and climdex.pcic differ on the
-  definition of Rx5day. The running sum series computed by
-  fclimdex is off by 2 days, and the first day a running
-  sum can be computed for is left out entirely. The
-  behaviour of fclimdex can be replicated by setting
-  center.mean.on.last.day to TRUE.
+The default behaviour of climdex.rx5day differs somewhat
+from fclimdex, as fclimdex and climdex.pcic differ on the
+definition of Rx5day. The running sum series computed by
+fclimdex is off by 2 days, and the first day a running sum
+can be computed for is left out entirely. The behaviour of
+fclimdex can be replicated by setting
+center.mean.on.last.day to TRUE.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -56,11 +58,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 rx5day <- climdex.rx5day(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

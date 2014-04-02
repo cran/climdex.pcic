@@ -2,8 +2,7 @@
 \alias{spell.length.max}
 \title{Maximum spell length}
 \usage{
-  spell.length.max(daily.prec, date.factor, threshold, op,
-    spells.can.span.years)
+spell.length.max(daily.prec, date.factor, threshold, op, spells.can.span.years)
 }
 \arguments{
   \item{daily.prec}{Data to compute index on.}
@@ -19,24 +18,24 @@
   years.}
 }
 \value{
-  A timeseries of maximum spell lengths for each period.
+A timeseries of maximum spell lengths for each period.
 }
 \description{
-  This function returns the longest string of days which
-  exceed or are below the given threshold.
+This function returns the longest string of days which
+exceed or are below the given threshold.
 }
 \details{
-  This routine compares data to the threshold using the
-  given operator, generating a series of TRUE or FALSE
-  values. It then computes the lengths of sequences of TRUE
-  values (spells) and chooses the longest spell in each
-  period (as defined by date.factor).
+This routine compares data to the threshold using the given
+operator, generating a series of TRUE or FALSE values. It
+then computes the lengths of sequences of TRUE values
+(spells) and chooses the longest spell in each period (as
+defined by date.factor).
 
-  The \code{spells.can.span.years} option controls whether
-  spells must always terminate at the end of a period, or
-  whether they may continue until the criteria ceases to be
-  met or the end of the data is reached. The default for
-  fclimdex is TRUE.
+The \code{spells.can.span.years} option controls whether
+spells must always terminate at the end of a period, or
+whether they may continue until the criteria ceases to be
+met or the end of the data is reached. The default for
+fclimdex is TRUE.
 }
 \examples{
 prec.dat <- c(0.1, 3.0, 4.3, 1.9, 1.3, 6.0, 0, 0, 4.0, 1)
@@ -49,7 +48,7 @@ cwd <- spell.length.max(prec.dat, phony.date.factor, 1, ">=", TRUE)
 altcwd <- spell.length.max(prec.dat, phony.date.factor, 1, ">=", FALSE)
 }
 \seealso{
-  \code{\link{climdex.cdd}}.
+\code{\link{climdex.cdd}}.
 }
 \keyword{climate}
 \keyword{ts}

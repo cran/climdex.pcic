@@ -2,12 +2,10 @@
 \alias{get.outofbase.quantiles}
 \title{Method for getting threshold quantiles for use in computing indices}
 \usage{
-  get.outofbase.quantiles(tmax = NULL, tmin = NULL,
-    prec = NULL, tmax.dates = NULL, tmin.dates = NULL,
-    prec.dates = NULL, base.range = c(1961, 1990), n = 5,
-    pad.data.with.first.last.values = FALSE,
-    temp.qtiles = c(0.1, 0.9), prec.qtiles = c(0.95, 0.99),
-    min.base.data.fraction.present = 0.1)
+get.outofbase.quantiles(tmax = NULL, tmin = NULL, prec = NULL,
+  tmax.dates = NULL, tmin.dates = NULL, prec.dates = NULL,
+  base.range = c(1961, 1990), n = 5, temp.qtiles = c(0.1, 0.9),
+  prec.qtiles = c(0.95, 0.99), min.base.data.fraction.present = 0.1)
 }
 \arguments{
   \item{tmax}{Daily maximum temperature data.}
@@ -30,9 +28,6 @@
   \item{n}{Number of days to use as window for daily
   quantiles.}
 
-  \item{pad.data.with.first.last.values}{Base data padding
-  option (see notes).}
-
   \item{temp.qtiles}{Quantiles to calculate for temperature
   variables}
 
@@ -47,27 +42,29 @@
   variables.}
 }
 \value{
-  A set of threshold quantiles
+A set of threshold quantiles
 }
 \description{
-  This function creates threshold quantiles for use with
-  climdexInput.raw or climdexInput.csv.
+This function creates threshold quantiles for use with
+climdexInput.raw or climdexInput.csv.
 }
 \details{
-  This function takes input climate data at daily
-  resolution, and produces as output a set of threshold
-  quantiles. This data structure can then be passed to
-  climdexInput.raw or climdexInput.csv.
+This function takes input climate data at daily resolution,
+and produces as output a set of threshold quantiles. This
+data structure can then be passed to climdexInput.raw or
+climdexInput.csv.
 
-  For more details on arguments, see
-  \code{link{climdexInput.raw}}.
+For more details on arguments, see
+\code{link{climdexInput.raw}}.
 }
 \note{
-  Units are assumed to be mm/day for precipitation and
-  degrees Celsius for temperature. No units conversion is
-  performed internally.
+Units are assumed to be mm/day for precipitation and
+degrees Celsius for temperature. No units conversion is
+performed internally.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -85,11 +82,11 @@ ec.1018935.tmin$MIN_TEMP, ec.1018935.prec$ONE_DAY_PRECIPITATION,
 tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdex.pcic-package}},
-  \code{\link{climdexInput.raw}}.
+\code{\link{climdex.pcic-package}},
+\code{\link{climdexInput.raw}}.
 }
 \keyword{climate}
 \keyword{ts}

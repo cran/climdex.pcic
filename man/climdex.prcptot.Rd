@@ -2,25 +2,27 @@
 \alias{climdex.prcptot}
 \title{Total Daily Precipitation}
 \usage{
-  climdex.prcptot(ci)
+climdex.prcptot(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing an annual timeseries of precipitation
-  in wet days.
+A vector containing an annual timeseries of precipitation
+in wet days.
 }
 \description{
-  This function computes the climdex index PRCPTOT.
+This function computes the climdex index PRCPTOT.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index PRCPTOT: the annual sum of
-  precipitation in wet days (days where precipitation is at
-  least 1mm).
+This function takes a climdexInput object as input and
+computes the climdex index PRCPTOT: the annual sum of
+precipitation in wet days (days where precipitation is at
+least 1mm).
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -41,11 +43,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 prcptot <- climdex.prcptot(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

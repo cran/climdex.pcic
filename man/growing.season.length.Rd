@@ -2,10 +2,9 @@
 \alias{growing.season.length}
 \title{Flexible GSL function}
 \usage{
-  growing.season.length(daily.mean.temp, date.factor,
-    dates, northern.hemisphere, min.length = 6,
-    t.thresh = 5,
-    gsl.mode = c("GSL", "GSL_first", "GSL_max", "GSL_sum"))
+growing.season.length(daily.mean.temp, date.factor, dates, northern.hemisphere,
+  min.length = 6, t.thresh = 5, gsl.mode = c("GSL", "GSL_first",
+  "GSL_max", "GSL_sum"))
 }
 \arguments{
   \item{daily.mean.temp}{Timeseries of daily mean
@@ -33,29 +32,31 @@
   mode is "GSL").}
 }
 \value{
-  A vector containing the number of days in the growing
-  season for each year.
+A vector containing the number of days in the growing
+season for each year.
 }
 \description{
-  This function computes the growing season length (GSL)
-  given the input, which is allowed to vary considerably
-  from the ETCCDI definitions.
+This function computes the growing season length (GSL)
+given the input, which is allowed to vary considerably from
+the ETCCDI definitions.
 }
 \details{
-  This function is the function used to implement
-  \code{\link{climdex.gsl}}. It's designed to be flexible
-  to allow for experimentation and testing of new
-  thresholds and methods.
+This function is the function used to implement
+\code{\link{climdex.gsl}}. It's designed to be flexible to
+allow for experimentation and testing of new thresholds and
+methods.
 
-  If you need to use this code for experimentation in the
-  southern hemisphere, you'll need to rip off the
-  climdex.gsl code to rotate the year around so that July
-  1st is treated as January 1st.
+If you need to use this code for experimentation in the
+southern hemisphere, you'll need to rip off the climdex.gsl
+code to rotate the year around so that July 1st is treated
+as January 1st.
 
-  See \code{\link{climdex.gsl}} for more information on
-  what \code{gsl.mode} does.
+See \code{\link{climdex.gsl}} for more information on what
+\code{gsl.mode} does.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -81,8 +82,7 @@ gsl <- growing.season.length(ci@data$tavg, ci@date.factors$annual, ci@dates,
 gsl
 }
 \seealso{
-  \code{\link{climdex.gsl}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdex.gsl}}, \code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

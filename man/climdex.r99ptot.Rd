@@ -2,26 +2,27 @@
 \alias{climdex.r99ptot}
 \title{Total Daily Precipitation Exceeding 99\%ile Threshold}
 \usage{
-  climdex.r99ptot(ci)
+climdex.r99ptot(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing an annual timeseries of precipitation
-  exceeding the threshold.
+A vector containing an annual timeseries of precipitation
+exceeding the threshold.
 }
 \description{
-  This function computes the climdex index R99pTOT.
+This function computes the climdex index R99pTOT.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index R99pTOT: the annual sum of
-  precipitation in days where daily precipitation exceeds
-  the 99th percentile of daily precipitation in the base
-  period.
+This function takes a climdexInput object as input and
+computes the climdex index R99pTOT: the annual sum of
+precipitation in days where daily precipitation exceeds the
+99th percentile of daily precipitation in the base period.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -42,11 +43,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 r99ptot <- climdex.r99ptot(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

@@ -2,7 +2,7 @@
 \alias{climdex.get.available.indices}
 \title{Get available indices by name}
 \usage{
-  climdex.get.available.indices(ci, function.names = TRUE)
+climdex.get.available.indices(ci, function.names = TRUE)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,21 +10,22 @@
   \item{function.names}{Whether to return function names.}
 }
 \value{
-  A vector containing an annual timeseries of precipitation
-  in wet days.
+A vector containing an annual timeseries of precipitation
+in wet days.
 }
 \description{
-  This function returns a vector of (function) names of
-  available indices.
+This function returns a vector of (function) names of
+available indices.
 }
 \details{
-  This function takes a climdexInput object as input and
-  returns the names of all the indices which may be
-  computed or, if \code{get.function.names} is TRUE (the
-  default), the names of the functions corresponding to the
-  indices.
+This function takes a climdexInput object as input and
+returns the names of all the indices which may be computed
+or, if \code{get.function.names} is TRUE (the default), the
+names of the functions corresponding to the indices.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 

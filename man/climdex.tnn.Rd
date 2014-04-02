@@ -2,7 +2,7 @@
 \alias{climdex.tnn}
 \title{Monthly Minimum of Daily Minimum Temperature}
 \usage{
-  climdex.tnn(ci, freq = c("monthly", "annual"))
+climdex.tnn(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,18 +10,19 @@
   \item{freq}{Time frequency to aggregate to.}
 }
 \value{
-  A vector containing the value of the index for each
-  month.
+A vector containing the value of the index for each month.
 }
 \description{
-  This function computes the climdex index TNn.
+This function computes the climdex index TNn.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the monthly or annual minimum of daily minimum
-  temperature.
+This function takes a climdexInput object as input and
+computes the monthly or annual minimum of daily minimum
+temperature.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -42,11 +43,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 tnn <- climdex.tnn(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

@@ -2,17 +2,13 @@
 \alias{climdexInput.csv}
 \title{Method for creating climdexInput object from CSV files}
 \usage{
-  climdexInput.csv(tmax.file = NULL, tmin.file = NULL,
-    prec.file = NULL,
-    data.columns = list(tmin = "tmin", tmax = "tmax", prec = "prec"),
-    base.range = c(1961, 1990), na.strings = NULL,
-    cal = "gregorian", date.types = NULL, n = 5,
-    northern.hemisphere = TRUE,
-    pad.data.with.first.last.values = FALSE,
-    tavg.file = NULL, quantiles = NULL,
-    temp.qtiles = c(0.1, 0.9), prec.qtiles = c(0.95, 0.99),
-    max.missing.days = c(annual = 15, monthly = 3),
-    min.base.data.fraction.present = 0.1)
+climdexInput.csv(tmax.file = NULL, tmin.file = NULL, prec.file = NULL,
+  data.columns = list(tmin = "tmin", tmax = "tmax", prec = "prec"),
+  base.range = c(1961, 1990), na.strings = NULL, cal = "gregorian",
+  date.types = NULL, n = 5, northern.hemisphere = TRUE,
+  tavg.file = NULL, quantiles = NULL, temp.qtiles = c(0.1, 0.9),
+  prec.qtiles = c(0.95, 0.99), max.missing.days = c(annual = 15, monthly =
+  3), min.base.data.fraction.present = 0.1)
 }
 \arguments{
   \item{tmax.file}{Name of file containing daily maximum
@@ -43,9 +39,6 @@
   \item{n}{Number of days to use as window for daily
   quantiles.}
 
-  \item{pad.data.with.first.last.values}{Base data padding
-  option (see notes).}
-
   \item{temp.qtiles}{Quantiles to calculate for temperature
   variables}
 
@@ -67,59 +60,59 @@
   month (monthly).}
 }
 \value{
-  An object of class \code{\link{climdexInput-class}} for
-  use with other climdex methods.
+An object of class \code{\link{climdexInput-class}} for use
+with other climdex methods.
 }
 \description{
-  This function creates a climdexInput object from data in
-  CSV files.
+This function creates a climdexInput object from data in
+CSV files.
 }
 \details{
-  This function takes input climate data in CSV files at
-  daily resolution, and produces as output a ClimdexInput
-  data structure. This data structure can then be passed to
-  any of the routines used to compute the Climdex indices.
-  The indices themselves are specified on the webpage cited
-  in the references section.
+This function takes input climate data in CSV files at
+daily resolution, and produces as output a ClimdexInput
+data structure. This data structure can then be passed to
+any of the routines used to compute the Climdex indices.
+The indices themselves are specified on the webpage cited
+in the references section.
 
-  Any of tmin.file (daily minimum temperature), tmax.file
-  (daily maximum temperature), tavg.file (daily mean
-  temperature), and prec.file (daily precipitation) can be
-  passed in. tavg will be derived from the mean of tmax and
-  tmin if it is not supplied. If any of tmin.file,
-  tmax.file, and prec.file are not supplied, the set of
-  indices which can be calculated will be limited to
-  indices which do not involve the missing variables.
+Any of tmin.file (daily minimum temperature), tmax.file
+(daily maximum temperature), tavg.file (daily mean
+temperature), and prec.file (daily precipitation) can be
+passed in. tavg will be derived from the mean of tmax and
+tmin if it is not supplied. If any of tmin.file, tmax.file,
+and prec.file are not supplied, the set of indices which
+can be calculated will be limited to indices which do not
+involve the missing variables.
 
-  The \code{tmax.file}, \code{tmin.file}, and
-  \code{prec.file} arguments should be names of CSV files
-  containing dates and the data on which the indices are to
-  be computed. The units are assumed to be degrees C for
-  temperature, and mm/day for precipitation.
+The \code{tmax.file}, \code{tmin.file}, and
+\code{prec.file} arguments should be names of CSV files
+containing dates and the data on which the indices are to
+be computed. The units are assumed to be degrees C for
+temperature, and mm/day for precipitation.
 
-  The \code{data.columns} argument is a vector consisting
-  of named items tmax, tmin, and prec. These named items
-  are used as the column names in their respective files
-  when loading in CSV.
+The \code{data.columns} argument is a vector consisting of
+named items tmax, tmin, and prec. These named items are
+used as the column names in their respective files when
+loading in CSV.
 
-  The \code{cal} argument is a textual description of the
-  calendar type, as described in the documentation for
-  \code{\link{as.PCICt}}.
+The \code{cal} argument is a textual description of the
+calendar type, as described in the documentation for
+\code{\link{as.PCICt}}.
 
-  The \code{date.types} argument is a list of lists
-  containing two named items: \code{fields}, and
-  \code{format}. The \code{fields} item is a vector of
-  names consisting of the columns to be concatenated
-  together with spaces. The \code{format} item is a date
-  format as taken by \code{strptime}.
+The \code{date.types} argument is a list of lists
+containing two named items: \code{fields}, and
+\code{format}. The \code{fields} item is a vector of names
+consisting of the columns to be concatenated together with
+spaces. The \code{format} item is a date format as taken by
+\code{strptime}.
 
-  For more details on arguments, see
-  \code{link{climdexInput.raw}}.
+For more details on arguments, see
+\code{link{climdexInput.raw}}.
 }
 \note{
-  Units are assumed to be mm/day for precipitation and
-  degrees Celsius for temperature. No units conversion is
-  performed internally.
+Units are assumed to be mm/day for precipitation and
+degrees Celsius for temperature. No units conversion is
+performed internally.
 }
 \examples{
 ## This would create a climdexInput object from a set of filenames (already
@@ -128,11 +121,11 @@
 prec.filename, date.types=list(list(fields=c("date"), format="\%Y-\%m-\%d")))}
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdex.pcic-package}},
-  \code{\link{climdexInput.raw}}.
+\code{\link{climdex.pcic-package}},
+\code{\link{climdexInput.raw}}.
 }
 \keyword{climate}
 \keyword{ts}

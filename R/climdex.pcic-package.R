@@ -33,7 +33,7 @@
 #' for more details.
 #' @seealso \code{\link{climdexInput.raw}}, \code{\link{climdexInput.csv}},
 #' \code{\link{climdexInput-class}}.
-#' @references \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+#' @references \url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 #' 
 #' Karl, T.R., N. Nicholls, and A. Ghazi, 1999: CLIVAR/GCOS/WMO workshop on
 #' indices and indicators for climate extremes: Workshop summary. Climatic
@@ -47,6 +47,7 @@
 #' temperature extremes. Journal of Climate 18.11 (2005):1641-.
 #' @keywords climate ts
 #' @useDynLib climdex.pcic
+#' @import PCICt Rcpp methods caTools
 NULL
 
 #' EC example data

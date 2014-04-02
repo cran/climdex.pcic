@@ -2,8 +2,8 @@
 \alias{nday.consec.prec.max}
 \title{Number of days (less than, greater than, etc) a threshold}
 \usage{
-  nday.consec.prec.max(daily.prec, date.factor, ndays,
-    center.mean.on.last.day = FALSE)
+nday.consec.prec.max(daily.prec, date.factor, ndays,
+  center.mean.on.last.day = FALSE)
 }
 \arguments{
   \item{daily.prec}{Daily timeseries of precipitation.}
@@ -17,22 +17,24 @@
   of the middle day.}
 }
 \value{
-  A vector consisting of the maximum n-day sum of
-  precipitation per time interval.
+A vector consisting of the maximum n-day sum of
+precipitation per time interval.
 }
 \description{
-  Produces sums of values that exceed (or are below) the
-  specified threshold.
+Produces sums of values that exceed (or are below) the
+specified threshold.
 }
 \details{
-  This function takes a data series, the number of days in
-  the running window, a date factor to aggregate by, and an
-  optional modifier parameter (center.mean.on.last.day). It
-  computes the n-day running sum of precipitation and
-  returns the maximum n-day total precipitation per unit
-  time, as defined by \code{date.factor}.
+This function takes a data series, the number of days in
+the running window, a date factor to aggregate by, and an
+optional modifier parameter (center.mean.on.last.day). It
+computes the n-day running sum of precipitation and returns
+the maximum n-day total precipitation per unit time, as
+defined by \code{date.factor}.
 }
 \examples{
+library(PCICt)
+
 ## Parse the dates into PCICt.
 tmax.dates <- as.PCICt(do.call(paste, ec.1018935.tmax[,c("year",
 "jday")]), format="\%Y \%j", cal="gregorian")

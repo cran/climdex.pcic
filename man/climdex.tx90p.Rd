@@ -1,8 +1,9 @@
 \name{climdex.tx90p}
 \alias{climdex.tx90p}
-\title{Percent of Values Above 90th Percentile Daily Maximum Temperature}
+\title{Computation of these percentiles involves use of a boostrap procedure,
+described below but described in more depth in [Zhang, 2005].}
 \usage{
-  climdex.tx90p(ci, freq = c("monthly", "annual"))
+climdex.tx90p(ci, freq = c("monthly", "annual"))
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,35 +11,47 @@
   \item{freq}{Time frequency to aggregate to.}
 }
 \value{
-  A vector containing a timeseries containing values of the
-  index on a monthly or annual timescale.
+A vector containing a timeseries containing values of the
+index on a monthly or annual timescale.
 }
 \description{
-  This function computes the climdex index TX90p.
+Computation of these values outside of the base period
+involves comparing the temperature data for each day with
+the corresponding percentiles for a 5 day running window
+surrounding that day. The resulting monthly series is then
+the monthly percentage of values that meet the criteria.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the monthly or annual percent of values above
-  the 90th percentile of baseline daily maximum
-  temperature.
+Computation of these values inside the base period is more
+complicated. It involves comparison of the daily
+temperature data with the corresponding day of temperature
+data in each of (n - 1) sets of data. The sets consist of
+the data for the base period with the current year replaced
+with each of the other years. The results of these
+comparisons are then averaged to give a value between 0 and
+1. Finally, the resulting daily series is aggregated to a
+monthly series by averaging these daily values and
+multiplying by 100 to give a monthly percentile value.
 }
 \note{
-  These functions may calculate slightly different results
-  than fclimdex.
+These functions may calculate slightly different results
+than fclimdex.
 
-  The bootstrapping method is not well defined for cases
-  where the base data contains numerous missing values.
-  Because of that, this code (and fclimdex) are not very
-  robust against missing values with respect to these
-  indicies. When computing percentiles inside the base
-  period, both this implementation and fclimdex do not
-  divide through by the number of non-missing values when
-  aggregating the values inside the base period. Instead,
-  they divide through by the number of base years minus
-  one. This will result in a negative bias when missing
-  values are present.
+The bootstrapping method is not well defined for cases
+where the base data contains numerous missing values.
+Because of that, this code (and fclimdex) are not very
+robust against missing values with respect to these
+indicies. When computing percentiles inside the base
+period, both this implementation and fclimdex do not divide
+through by the number of non-missing values when
+aggregating the values inside the base period. Instead,
+they divide through by the number of base years minus one.
+This will result in a negative bias when missing values are
+present.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -59,11 +72,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 tx90p <- climdex.tx90p(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

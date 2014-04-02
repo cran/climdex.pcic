@@ -2,25 +2,26 @@
 \alias{climdex.tr}
 \title{Tropical Nights}
 \usage{
-  climdex.tr(ci)
+climdex.tr(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing the number of frost days for each
-  year.
+A vector containing the number of frost days for each year.
 }
 \description{
-  This function computes the climdex index TR.
+This function computes the climdex index TR.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the TR (tropical nights) climdex index: that is,
-  the annual count of days where daily minimum temperature
-  stays above 20 degrees Celsius.
+This function takes a climdexInput object as input and
+computes the TR (tropical nights) climdex index: that is,
+the annual count of days where daily minimum temperature
+stays above 20 degrees Celsius.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -41,11 +42,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 tr <- climdex.tr(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

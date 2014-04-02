@@ -2,7 +2,7 @@
 \alias{climdex.rnnmm}
 \title{Precipitation Exceeding A Specified Amount Per Day}
 \usage{
-  climdex.rnnmm(ci, threshold = 1)
+climdex.rnnmm(ci, threshold = 1)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
@@ -10,18 +10,20 @@
   \item{threshold}{The threshold to be used for Rnnmm.}
 }
 \value{
-  A vector containing the value of the index for each year.
+A vector containing the value of the index for each year.
 }
 \description{
-  This function computes the climdex index Rnnmm.
+This function computes the climdex index Rnnmm.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the climdex index Rnnmm: the annual count of
-  days where daily precipitation is more than \code{nn} mm
-  per day.
+This function takes a climdexInput object as input and
+computes the climdex index Rnnmm: the annual count of days
+where daily precipitation is more than \code{nn} mm per
+day.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -42,11 +44,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 rnnmm <- climdex.rnnmm(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

@@ -2,29 +2,31 @@
 \alias{climdex.sdii}
 \title{Simple Precpitation Intensity Index}
 \usage{
-  climdex.sdii(ci)
+climdex.sdii(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing the value of the index for each year.
+A vector containing the value of the index for each year.
 }
 \description{
-  This function computes the climdex index SDII.
+This function computes the climdex index SDII.
 }
 \details{
-  \code{climdex.sdii} computes the climdex index SDII, or
-  Simple Precipitation Intensity Index. This is defined as
-  the sum of precipitation in wet days (days with
-  preciptitation over 1mm) during the year divided by the
-  number of wet days in the year.
+\code{climdex.sdii} computes the climdex index SDII, or
+Simple Precipitation Intensity Index. This is defined as
+the sum of precipitation in wet days (days with
+preciptitation over 1mm) during the year divided by the
+number of wet days in the year.
 }
 \note{
-  fclimdex rounds to 1 decimal place, whereas climdex.sdii
-  does not. This results in some small differences.
+fclimdex rounds to 1 decimal place, whereas climdex.sdii
+does not. This results in some small differences.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -45,11 +47,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 sdii <- climdex.sdii(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

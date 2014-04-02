@@ -2,25 +2,26 @@
 \alias{climdex.fd}
 \title{Frost Days}
 \usage{
-  climdex.fd(ci)
+climdex.fd(ci)
 }
 \arguments{
   \item{ci}{Object of type climdexInput.}
 }
 \value{
-  A vector containing the number of frost days for each
-  year.
+A vector containing the number of frost days for each year.
 }
 \description{
-  This function computes the climdex index FD.
+This function computes the climdex index FD.
 }
 \details{
-  This function takes a climdexInput object as input and
-  computes the FD (frost days) climdex index: that is, the
-  annual count of days where daily minimum temperature
-  drops below 0 degrees Celsius.
+This function takes a climdexInput object as input and
+computes the FD (frost days) climdex index: that is, the
+annual count of days where daily minimum temperature drops
+below 0 degrees Celsius.
 }
 \examples{
+library(PCICt)
+
 ## Create a climdexInput object from some data already loaded in and
 ## ready to go.
 
@@ -41,11 +42,11 @@ tmax.dates, tmin.dates, prec.dates, base.range=c(1971, 2000))
 fd <- climdex.fd(ci)
 }
 \references{
-  \url{http://cccma.seos.uvic.ca/ETCCDMI/list_27_indices.shtml}
+\url{http://etccdi.pacificclimate.org/list_27_indices.shtml}
 }
 \seealso{
-  \code{\link{climdexInput.raw}},
-  \code{\link{climdexInput.csv}}.
+\code{\link{climdexInput.raw}},
+\code{\link{climdexInput.csv}}.
 }
 \keyword{climate}
 \keyword{ts}

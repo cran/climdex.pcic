@@ -2,7 +2,7 @@
 \alias{select.blocks.gt.length}
 \title{Select blocks of TRUE values of sufficient length.}
 \usage{
-  select.blocks.gt.length(d, n, na.value = FALSE)
+select.blocks.gt.length(d, n, na.value = FALSE)
 }
 \arguments{
   \item{d}{Sequence of booleans.}
@@ -12,20 +12,19 @@
   \item{na.value}{Values to replace NAs with.}
 }
 \value{
-  A vector of booleans, with the length \code{n} or less
-  sequences of TRUE replaced with FALSE.
+A vector of booleans, with the length \code{n} or less
+sequences of TRUE replaced with FALSE.
 }
 \description{
-  Produces a sequence of booleans of the same length as
-  input, with sequences of TRUE values shorter than n
-  replaced with FALSE.
+Produces a sequence of booleans of the same length as
+input, with sequences of TRUE values shorter than n
+replaced with FALSE.
 }
 \details{
-  This function takes a series of booleans and returns a
-  sequence of booleans of equal length, with all sequences
-  of TRUE of length \code{n} or shorter replaced with
-  sequences of FALSE. NA values are replaced with
-  \code{na.value}.
+This function takes a series of booleans and returns a
+sequence of booleans of equal length, with all sequences of
+TRUE of length \code{n} or shorter replaced with sequences
+of FALSE. NA values are replaced with \code{na.value}.
 }
 \examples{
 ## Return only the first sequence of TRUE... second sequence will be FALSE.
