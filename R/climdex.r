@@ -65,6 +65,7 @@ valid.climdexInput <- function(x) {
   errors <- do.call(c, c(list(errors), lapply(intersect(present.data.vars, c("tmax", "tmin", "prec")), function(n) {
     if(is.null(quantiles[n]))
       return(NULL)
+    ## FIXME: This test isn't necessarily valid and prevents calculating indices when no base period data is available.
     if(!(n %in% ls(envir=x@quantiles)))
       return(paste("Quantiles for", n, "are missing."))
     return(NULL)
@@ -290,7 +291,7 @@ check.basic.argument.validity <- function(tmax, tmin, prec, tmax.dates, tmin.dat
   check.var(tavg, tavg.dates, "tavg")
   check.var(prec, prec.dates, "prec")
 
-  if(sum(c(is.null(tmax), is.null(tmin), is.null(prec), is.null(tavg))) == 0)
+  if(all(c(is.null(tmax), is.null(tmin), is.null(prec), is.null(tavg))))
     stop("Must supply at least one variable to calculate indices upon.")
 
   if(!(length(base.range) == 2 && is.numeric(base.range)))
