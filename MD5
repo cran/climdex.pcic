@@ -1,6 +1,6 @@
 792707a4bfcfd62c8f3e7b8a6ef8ffca *CHANGELOG
 d32239bcb673463ab874e80d47fae504 *COPYING
-15c01ad936eb7b2b41a6efc99c8c206c *DESCRIPTION
+c68f6ef624cedb2feace5b81da53ed6b *DESCRIPTION
 5c555ea731c8a7719ea2d5464d03a761 *NAMESPACE
 7e882078baf040e9d089b196da2f1162 *R/climdex.pcic-package.R
 9b2ed368542cea75971b21f20ff88968 *R/climdex.r
@@ -36,7 +36,7 @@ b32446d37eb836e654beba3cfc9ddec0 *man/climdex.tr.Rd
 c02981c5ebf9dfc925168fbaa2821bf2 *man/climdex.txx.Rd
 610d7d93554d9bdd30858364c8d2ee5b *man/climdex.wsdi.Rd
 116fc1fb17de2363079b1e38efd91e6e *man/climdexInput.Rd
-bebd63b6b1ad3eb1f2629d5d8e24bf6d *man/climdexInput.csv.Rd
+4632fad1d1fcf859dbac5aa3d355c4ed *man/climdexInput.csv.Rd
 23f177eaeeec10bc1222e9d3a68a040b *man/climdexInput.raw.Rd
 19bb8bf0173b2554f561dea7dd38d646 *man/ec.1018935.Rd
 437111ba77f9be2338e5f8816d66b6f0 *man/get.last.monthday.of.year.Rd

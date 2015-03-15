@@ -95,7 +95,7 @@ for temperature. No units conversion is performed internally.
 \examples{
 ## This would create a climdexInput object from a set of filenames (already
 ## stored as variables), with a different date format.
-\donttest{ci.csv <- climdexInput.csv(tmax.filename, tmin.filename,
+\dontrun{ci.csv <- climdexInput.csv(tmax.filename, tmin.filename,
 prec.filename, date.types=list(list(fields=c("date"), format="\%Y-\%m-\%d")))}
 }
 \references{
