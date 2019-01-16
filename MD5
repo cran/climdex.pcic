@@ -1,6 +1,6 @@
 685731eb9a7b2bfd72959f2a660f5d97 *CHANGELOG
 d32239bcb673463ab874e80d47fae504 *COPYING
-f3f9e005978d3a0508cf5cfc7f1888df *DESCRIPTION
+451d945bb237daf154e1be84e15d6208 *DESCRIPTION
 3568502876cf52707c36ad9edfadb44a *NAMESPACE
 74da59a20acd8c03ba17cd24c76ea00a *R/climdex.pcic-package.R
 303033b16807ccb5121778c63c989257 *R/climdex.r
@@ -52,8 +52,6 @@ c4cdfa83b6a129bbb5c9ba7a9674d1b0 *man/simple.precipitation.intensity.index.Rd
 7bee4766056d5717d7eec267af167a9f *man/spell.length.max.Rd
 629b86c476fac3ec8ee8321acc7d78d7 *man/threshold.exceedance.duration.index.Rd
 9203cc9f6e6e87a5fc2faea719f5d2e7 *man/total.precip.op.threshold.Rd
-42d9beb282893bb1c6c538487018d761 *src/Makevars
-b0ffc92904041c48972372742ffbe129 *src/Makevars.win
 015574431aef7f97a4c4dea38e5d1219 *src/climdex.pcic_init.c
 2fa674ca6c81f29a0b2d0b1397b74d92 *src/zhang_running_quantile.cc
 d5b8cd12a7297a15b7e4b3e6de7b6537 *tests/1018935_MAX_TEMP.csv
